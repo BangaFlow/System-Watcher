@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
+type User = {
+  firstName: string,
+  lastName: string
+}
+
 function User() {
 
   const [users, setUsers] = useState([])
@@ -15,7 +20,7 @@ function User() {
       {
         users.length > 0 
         ?
-        users.map(user => <li>{ user.firstName } { user.lastName }</li>)  
+        users.map((user: User) => <li>{ user.firstName } { user.lastName }</li>)
         : 
         null
       }
