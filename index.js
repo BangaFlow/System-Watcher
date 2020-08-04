@@ -27,5 +27,5 @@ app.get('/api/users', (req, res) => {
 const PORT = 5000
 
 app.listen(PORT, 
-  () => console.log(`Server started and running on port ${PORT}, http://localhost:5000/api/users`)
+  () => console.log(`Server started and running on port ${PORT}.`)
 )
