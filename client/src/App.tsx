@@ -16,6 +16,10 @@ const Landing = React.lazy(() =>
   import(/* webpackChunkName: "Nav" */ './Layout/Landing/Hero')
 )
 
+const Contact = React.lazy(() => 
+  import(/* webpackChunkName: "Contact" */ './pages/Contact')
+)
+
 function App() {
   return (
     <div>
@@ -25,7 +29,7 @@ function App() {
             <Loader />
           </Route>
           <Route path="/users">
-            <User />
+            <Contact />
           </Route>
           <Route path="/">
             <Landing />
