@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Layout } from 'antd'
 
 type User = {
   id: number,
@@ -9,6 +10,7 @@ type User = {
 function User() {
 
   const [users, setUsers] = useState([])
+  const { Content } = Layout
 
   useEffect(() => {
     fetch('http://localhost:5000/api/users')
@@ -17,15 +19,20 @@ function User() {
   }, [])
   
   return (
-    <ul>
-      {
-        users.length > 0 
-        ?
-        users.map((user: User) => <li key={user.id}>{ user.firstName } { user.lastName }</li>)
-        : 
-        null
-      }
-    </ul>
+    <Content style={{
+      height: "100%",
+      
+    }} >
+      <ul>
+        {
+          users.length > 0 
+          ?
+          users.map((user: User) => <li key={user.id}>{ user.firstName } { user.lastName }</li>)
+          : 
+          null
+        }
+      </ul>
+    </Content>
   )
 }
 

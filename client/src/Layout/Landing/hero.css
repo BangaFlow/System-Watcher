@@ -1,0 +1,41 @@
+.hero {
+    width: 55%;
+    text-align: left;
+    color: #4A4A4A;
+}
+.hero__title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    padding-top: 7rem;
+}
+
+.hero__paragraph {
+    font-family: Pridi;
+    font-weight: normal;
+    font-size: 1.5rem;
+    padding-top: 1.4rem;
+}
+
+.hero__image {
+    max-width: 95%;
+    height: auto;
+    padding-top: 10em;
+}
+
+@media screen and (max-width: 480px) {
+    .hero__image {
+        max-width: 100%;
+        padding-top: 2em;
+    }
+
+    .hero {
+        width: 100%;
+        text-align: left;
+        line-height: normal;
+    }
+
+    .hero__title {
+        font-size: 2.5rem;
+        padding-top: 2rem;
+    }
+  }

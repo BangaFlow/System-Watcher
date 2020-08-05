@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 function Loader() {
   return (
-    <div style={{margin: '0 auto', width: '50%', textAlign: "center", paddingTop: "15%"}}>
+    <div style={{margin: '0 auto', width: '50%', textAlign: "center", paddingTop: "15%", minHeight: "760px"}}>
       <svg>
         <motion.circle cx="100" cy="75" r="16" fill="grey"
         animate={{ fill: ["#CCCCCC", "#C32A2A", "#CCCCCC"]}}
