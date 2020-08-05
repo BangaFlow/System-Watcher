@@ -12,8 +12,6 @@
   "author": "Khaled Saidi",
   "license": "MIT",
   "dependencies": {
-    "@types/react": "^16.9.44",
-    "@types/react-dom": "^16.9.8",
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1"
