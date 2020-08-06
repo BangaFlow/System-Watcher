@@ -1,8 +1,28 @@
-.hero {
-    width: 55%;
+.hero__wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.hero__container {
+    padding: 1rem;
+}
+
+.child--1 {
+    flex-basis: 35%;
+}
+
+.child--2 {
+    flex-basis: 45%;
+}
+
+.hero--text {
     text-align: left;
     color: #4A4A4A;
 }
+
 .hero__title {
     font-family: 'Montserrat', sans-serif;
     font-size: 3rem;
@@ -13,24 +33,33 @@
     font-family: Pridi;
     font-weight: normal;
     font-size: 1.5rem;
-    padding-top: 1.4rem;
 }
 
 .hero__image {
-    max-width: 95%;
+    max-width: 100%;
     height: auto;
-    padding-top: 10em;
+    padding-top: 2em;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 500px) {
+
+    .hero__container {
+        flex-basis: 100%;
+    }
+
+    .child--1 {
+        order: 2;
+    }
+    
+    .child--2 {
+        order: 1;
+    }
+
     .hero__image {
-        max-width: 100%;
         padding-top: 2em;
     }
 
-    .hero {
-        width: 100%;
-        text-align: left;
+    .hero--text {
         line-height: normal;
     }
 
