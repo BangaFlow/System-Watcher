@@ -88,7 +88,7 @@ function Header() {
           type='link'
           style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1rem' }}
         >
-          <NavLink activeStyle={{ color: '#444444' }} to='/users'>
+          <NavLink activeStyle={{ color: '#444444' }} to='/contact'>
             Contact
           </NavLink>
         </Button>

@@ -8,10 +8,6 @@ import Loader from './helpers/Loader'
 import Footer from './Layout/Landing/Footer'
 import Header from './Layout/Landing/Header'
 
-const User = React.lazy(() => 
-  import(/* webpackChunkName: "User" */ './components/users/User')
-)
-
 const Landing = React.lazy(() => 
   import(/* webpackChunkName: "Nav" */ './Layout/Landing/Hero')
 )
@@ -28,7 +24,7 @@ function App() {
           <Route path="/about">
             <Loader />
           </Route>
-          <Route path="/users">
+          <Route path="/contact">
             <Contact />
           </Route>
           <Route path="/">

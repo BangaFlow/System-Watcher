@@ -1,0 +1,34 @@
+.contact__container {
+    background-color: #F1F3F2;
+    min-height: 760px;
+    display: flex;
+}
+
+.flex--item {
+    background-color: #FFF;
+    margin: auto;
+    padding: 3rem;
+    width: 40%;
+}
+
+h1 {
+    font-size: 1.8em;
+    font-family: 'Montserrat', sans-serif;
+    color: #4a4a4a;
+}
+
+.contact--text {
+    font-size: 1.1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contact--text strong {
+    color: #222;
+}
+
+@media screen and (max-width: 480px) {
+    .flex--item {
+        padding: 1rem;
+        width: 90%;
+    }
+}
