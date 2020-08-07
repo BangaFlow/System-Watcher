@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Form, Input, InputNumber, Button } from 'antd'
+import { Layout, Form, Input, Button } from 'antd'
 import { motion } from 'framer-motion'
 import { Store } from 'antd/lib/form/interface'
 import './contact.css'
@@ -20,7 +20,7 @@ function Contact() {
 	return (
 		<Content className='contact__container'>
 		<motion.div
-			className='flex--item'
+			className='contact__form'
 			animate={{x: ['100vw', '0vw'], opacity: [0, 1]}}
 			transition={{duration: 1, ease: 'easeOut', delay: .2}}
 		>

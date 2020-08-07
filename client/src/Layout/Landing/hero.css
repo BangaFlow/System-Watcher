@@ -1,9 +1,10 @@
 .hero__wrapper {
     width: 100%;
+    min-height: var(--main-height);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    min-height: 100%;
+    background-color: var(--main-bg);
 }
 
 .hero__container {

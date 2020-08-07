@@ -76,7 +76,7 @@ function Header() {
 	
   return (
     <Row align='middle' style={{ padding: '1rem' }}>
-      <Col span={10} offset={2}>
+      <Col span={10} offset={2} >
         <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
           <NavLink exact activeStyle={{ color: '#444444' }} to='/'>
             WATCHER
