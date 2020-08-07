@@ -38,7 +38,7 @@ function Contact() {
 					<Input.TextArea autoSize={{minRows: 6, maxRows: 10}} />
 				</Form.Item>
 				<Form.Item>
-					<Button  className='contact--text'type='primary' htmlType='submit'>
+					<Button className='contact__button'type='primary' htmlType='submit'>
 						Submit
 					</Button>
 				</Form.Item>

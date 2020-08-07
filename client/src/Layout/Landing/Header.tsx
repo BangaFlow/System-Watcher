@@ -75,10 +75,10 @@ function Header() {
 	}
 	
   return (
-    <Row align='middle' style={{ padding: '1rem' }}>
+    <Row align='middle' style={{ padding: '1rem'}}>
       <Col span={10} offset={2} >
         <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-          <NavLink exact activeStyle={{ color: '#444444' }} to='/'>
+          <NavLink exact style={{ color: '#444444' }} to='/'>
             WATCHER
           </NavLink>
         </span>
@@ -86,7 +86,7 @@ function Header() {
       <Col span={8}>
         <Button
           type='link'
-          style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1rem' }}
+          style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1.2rem' }}
         >
           <NavLink activeStyle={{ color: '#444444' }} to='/contact'>
             Contact
@@ -94,7 +94,7 @@ function Header() {
         </Button>
         <Button
           type='link'
-          style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1rem' }}
+          style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1.2rem' }}
         >
           <NavLink activeStyle={{ color: '#444444' }} to='/about'>
             About
@@ -105,20 +105,20 @@ function Header() {
         <Button
           onClick={showModal}
           type='link'
-          style={{ color: '#C32A2A', fontWeight: 'bold', fontSize: '1rem' }}
+          style={{ color: '#C32A2A', fontWeight: 'bold', fontSize: '1.2rem' }}
         >
           Log In
         </Button>
         <Button
           type='link'
           style={{
-            color: '#E5E5E5',
+            color: '#f7eeee',
             borderColor: '#C32A2A',
             backgroundColor: '#C32A2A',
             borderRadius: '5px',
             fontWeight: 'bold',
             lineHeight: '1rem',
-            fontSize: '1rem',
+            fontSize: '1.2rem',
           }}
         >
           Sign Up
