@@ -1,4 +1,4 @@
-import React from 'react'
+import React , { useLayoutEffect, useState } from 'react'
 import { Layout, Form, Input, Button } from 'antd'
 import { motion } from 'framer-motion'
 import { Store } from 'antd/lib/form/interface'
@@ -9,7 +9,22 @@ const layout = {
 	wrapperCol: { span: 24 },
 }
 
+function useWindowSize() {
+	const [size, setSize] = useState([0, 0]);
+	useLayoutEffect(() => {
+	  function updateSize() {
+		setSize([window.innerWidth, window.innerHeight]);
+	  }
+	  window.addEventListener('resize', updateSize);
+	  updateSize();
+	  return () => window.removeEventListener('resize', updateSize);
+	}, [])
+	return size
+  }
+
 function Contact() {
+
+	const [width, height] = useWindowSize()
 
 	const { Content } = Layout
 	
@@ -17,16 +32,21 @@ function Contact() {
 		console.log(values)
 	}
 
+	const flex = width < 1200 ?  '90%' : '40%'
+
 	return (
 		<Content className='contact__container'>
 		<motion.div
+			// style={{ flexBasis: width < 1400 ? '60%' : '40%' }}
 			className='contact__form'
-			animate={{x: ['100vw', '0vw'], opacity: [0, 1]}}
+			// animate={{x: ['100vw', '0vw'], opacity: [0, 1]}}
+			animate = {{flexBasis: flex}}
 			transition={{duration: 1, ease: 'easeOut', delay: .2}}
 		>
 			<Form {...layout} name='nest-messages' onFinish={onFinish} size='large' layout='vertical'>
 				<Form.Item>
 					<h1>Contact Us</h1>
+					<span>Window size: {width} x {height}</span>
 				</Form.Item>
 				<Form.Item name={['user', 'name']} label={<strong className='contact--text'>Name</strong>} rules={[{ required: true }]}>
 					<Input />

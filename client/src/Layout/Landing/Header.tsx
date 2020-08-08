@@ -1,7 +1,11 @@
-import React from 'react'
-import { Row, Col, Button, Form, Modal, Input, Checkbox } from 'antd'
+import React, { useContext } from 'react'
+import { MenuToggle } from './MenuToggle'
+import { Button, Form, Modal, Input, Checkbox } from 'antd'
 import { NavLink } from 'react-router-dom'
 import { Store } from 'antd/lib/form/interface'
+import './header.css'
+import { motion } from 'framer-motion'
+import { MenuContext } from '../../App'
 
 const layout = {
   labelCol: { span: 6 },
@@ -13,7 +17,7 @@ const tailLayout = {
 }
 
 function Header() {
-
+  const {open, setOpen} = useContext(MenuContext)
   const [form] = Form.useForm()
 
   const showModal = () => {
@@ -75,56 +79,56 @@ function Header() {
 	}
 	
   return (
-    <Row align='middle' style={{ padding: '1rem'}}>
-      <Col span={10} offset={2} >
-        <span style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-          <NavLink exact style={{ color: '#444444' }} to='/'>
-            WATCHER
-          </NavLink>
+    <div className='header__container'>
+      <div className='flex--item'>
+        <span>
+            <NavLink exact className='header--text header--logo' to='/'>
+              WATCHER
+            </NavLink>
         </span>
-      </Col>
-      <Col span={8}>
+      </div>
+      <div className='flex--item'>
         <Button
           type='link'
-          style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1.2rem' }}
+          className='header--text header--link'
         >
-          <NavLink activeStyle={{ color: '#444444' }} to='/contact'>
+          <NavLink activeClassName='link--active' to='/contact'>
             Contact
           </NavLink>
         </Button>
         <Button
           type='link'
-          style={{ fontWeight: 'bold', color: '#666666D9', fontSize: '1.2rem' }}
+          className='header--text header--link'
         >
-          <NavLink activeStyle={{ color: '#444444' }} to='/about'>
+          <NavLink activeClassName='link--active' to='/about'>
             About
           </NavLink>
         </Button>
-      </Col>
-      <Col span={4}>
+      </div>
+      <div className='flex--item'>
         <Button
           onClick={showModal}
           type='link'
-          style={{ color: '#C32A2A', fontWeight: 'bold', fontSize: '1.2rem' }}
+          className='header--text button--text'
         >
           Log In
         </Button>
         <Button
           type='link'
-          style={{
-            color: '#f7eeee',
-            borderColor: '#C32A2A',
-            backgroundColor: '#C32A2A',
-            borderRadius: '5px',
-            fontWeight: 'bold',
-            lineHeight: '1rem',
-            fontSize: '1.2rem',
-          }}
+          className='header--button header--text button--text'
         >
           Sign Up
         </Button>
-      </Col>
-    </Row>
+      </div>
+      <motion.div 
+        className='flex--item hidden--menu'
+        initial={false}
+        animate={open ? "open" : "closed"}
+        >
+        <MenuToggle toggle={() => setOpen()} />
+        
+      </motion.div>
+    </div>
   )
 }
 

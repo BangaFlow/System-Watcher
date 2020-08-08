@@ -9,7 +9,7 @@
     background-color: #FFF;
     margin: 3rem auto;
     padding: 3rem;
-    width: 40%;
+    flex-basis: 40%;
 }
 
 h1 {
@@ -33,10 +33,9 @@ h1 {
     background-color: #086fcf;
 }
 
-@media screen and (max-width: 480px) {
-    .flex--item {
-        padding: 1rem;
-        margin: 1.5rem;
-        width: 90%;
+@media screen and (max-width: 500px) {
+    .contact__form {
+        margin: 3rem auto;
+        /* flex-basis: 90%; */
     }
 }
