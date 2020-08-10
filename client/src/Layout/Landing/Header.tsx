@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { MenuToggle } from './MenuToggle'
 import { Button, Form, Modal, Input, Checkbox } from 'antd'
 import { NavLink } from 'react-router-dom'
@@ -19,63 +19,23 @@ const tailLayout = {
 function Header() {
   const {open, setOpen} = useContext(MenuContext)
   const [form] = Form.useForm()
+  const [visible, setVisible] = useState(false)
 
   const showModal = () => {
-    Modal.confirm({
-      title: 'Sign In',
-      centered: true,
-      icon: null,
-      okButtonProps: { hidden: true },
-      cancelButtonProps: { hidden: true },
+    setVisible(true)
+  }
 
-      content: (
-        <Form
-          style={{
-            paddingTop: '3rem',
-          }}
-          {...layout}
-          name='basic'
-          form={form}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            label='Username'
-            name='username'
-            rules={[{ required: true, message: 'Please input your username!' }]}
-          >
-            <Input placeholder='GoodCitizen12' />
-          </Form.Item>
-
-          <Form.Item
-            label='Password'
-            name='password'
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password placeholder='your password!' />
-          </Form.Item>
-
-          <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <Button type='primary' htmlType='submit' danger>
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      ),
-      maskClosable: true,
-      okText: 'Submit',
-      cancelText: 'Cancel',
-    })
+  const handleCancel = () => {
+    setVisible(false)
   }
 
   // For the form inside the create modal
   const onFinish = (values: Store) => {
     console.log('These are form values :', values)
-    form.resetFields()
+    if (values.username === 'khaled' && values.password === 'khaled') {
+      window.location.href = '/'
+      form.resetFields()
+    }
 	}
 	
   return (
@@ -126,8 +86,51 @@ function Header() {
         animate={open ? "open" : "closed"}
         >
         <MenuToggle toggle={() => setOpen()} />
-        
       </motion.div>
+      <Modal
+        title='Sign In'
+        visible={visible}
+        centered
+        footer={null}
+        onCancel={handleCancel}
+      >
+      <Form
+          style={{
+            paddingTop: '3rem',
+          }}
+          {...layout}
+          name='basic'
+          form={form}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+        >
+          <Form.Item
+            label='Username'
+            name='username'
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input placeholder='GoodCitizen12' />
+          </Form.Item>
+
+          <Form.Item
+            label='Password'
+            name='password'
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password placeholder='your password!' />
+          </Form.Item>
+
+          <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Button type='primary' htmlType='submit' danger>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }
