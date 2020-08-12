@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { MenuToggle } from './MenuToggle'
-import { Button, Form, Modal, Input, Checkbox } from 'antd'
+import { Button, Form, Modal, Input, Checkbox, Tooltip } from 'antd'
 import { NavLink } from 'react-router-dom'
 import { Store } from 'antd/lib/form/interface'
 import './header.css'
@@ -8,33 +8,79 @@ import { motion } from 'framer-motion'
 import { MenuContext } from '../../App'
 
 const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 16 },
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
 }
 
 const tailLayout = {
-  wrapperCol: { offset: 6, span: 16 },
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 6,
+    },
+  },
 }
 
 function Header() {
   const {open, setOpen} = useContext(MenuContext)
-  const [form] = Form.useForm()
-  const [visible, setVisible] = useState(false)
+  const [formLogIn] = Form.useForm()
+  const [formSignUp] = Form.useForm()
+  const [visibleLog, setVisibleLog] = useState(false)
+  const [visibleSignUp, setVisibleSign] = useState(false)
 
-  const showModal = () => {
-    setVisible(true)
+  const showModalLogIN = () => {
+    setVisibleLog(true)
+  }
+
+  const showModalSingUp = () => {
+    setVisibleSign(true)
+  }
+
+  // Handle the login moodal footer elements actions
+  const handleOk = () => {
+    formLogIn.submit()
   }
 
   const handleCancel = () => {
-    setVisible(false)
+    setVisibleLog(false)
+    formLogIn.resetFields()
   }
 
-  // For the form inside the create modal
-  const onFinish = (values: Store) => {
+   // Handle the sing up moodal footer elements actions
+   const handleSignOk = () => {
+    formSignUp.submit()
+  }
+
+  const handleSignCancel = () => {
+    setVisibleSign(false)
+    formSignUp.resetFields()
+  }
+
+  // For the form inside the log in modal
+  const onFinishLog = (values: Store) => {
     console.log('These are form values :', values)
     if (values.username === 'khaled' && values.password === 'khaled') {
       window.location.href = '/'
-      form.resetFields()
+      formLogIn.resetFields()
+    }
+  }
+  
+  // For the form inside the sign up modal
+  const onFinishSign = (values: Store) => {
+    console.log('These are form values :', values)
+    if (values.username === 'khaled' && values.password === 'khaled') {
+      window.location.href = '/'
+      formLogIn.resetFields()
     }
 	}
 	
@@ -67,13 +113,14 @@ function Header() {
       </div>
       <div className='flex--item'>
         <Button
-          onClick={showModal}
+          onClick={showModalLogIN}
           type='link'
           className='header--text button--text'
         >
           Log In
         </Button>
         <Button
+        onClick={showModalSingUp}
           type='link'
           className='header--button header--text button--text'
         >
@@ -89,9 +136,11 @@ function Header() {
       </motion.div>
       <Modal
         title='Sign In'
-        visible={visible}
+        visible={visibleLog}
         centered
-        footer={null}
+        okText='Sign In'
+        cancelText='Go Back'
+        onOk={handleOk}
         onCancel={handleCancel}
       >
       <Form
@@ -100,14 +149,15 @@ function Header() {
           }}
           {...layout}
           name='basic'
-          form={form}
+          form={formLogIn}
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={onFinishLog}
         >
           <Form.Item
             label='Username'
             name='username'
             rules={[{ required: true, message: 'Please input your username!' }]}
+            hasFeedback
           >
             <Input placeholder='GoodCitizen12' />
           </Form.Item>
@@ -115,7 +165,13 @@ function Header() {
           <Form.Item
             label='Password'
             name='password'
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              }
+            ]}
+            hasFeedback
           >
             <Input.Password placeholder='your password!' />
           </Form.Item>
@@ -123,11 +179,102 @@ function Header() {
           <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title='Sign Up'
+        visible={visibleSignUp}
+        centered
+        okText='Sign Up'
+        cancelText='Go Back'
+        onOk={handleSignOk}
+        onCancel={handleSignCancel}
+      >
+      <Form
+          style={{
+            paddingTop: '3rem',
+          }}
+          {...layout}
+          name='basic'
+          form={formSignUp}
+          initialValues={{ remember: true }}
+          onFinish={onFinishSign}
+        >
+          <Form.Item
+            name="username"
+            label={
+                <Tooltip title="What do you want others to call you?">  
+                  <span>
+                  Username&nbsp;
+                  </span>
+                </Tooltip>
+            }
+            rules={[{ required: true, message: 'Please input your username!', whitespace: true }]}
+            hasFeedback
+          >
+            <Input placeholder='GoodCitizen12' />
+          </Form.Item>
 
-          <Form.Item {...tailLayout}>
-            <Button type='primary' htmlType='submit' danger>
-              Submit
-            </Button>
+          <Form.Item
+            name="email"
+            label="E-mail"
+            rules={[
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ]}
+            hasFeedback
+          >
+            <Input placeholder='abc@example.tn' />
+          </Form.Item>
+
+          <Form.Item
+             name="password"
+             label="Password"
+             rules={[
+               {
+                 required: true,
+                 message: 'Please input your password!',
+               },
+               {
+                 pattern: /^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)(?=\S*[^\w\s])\S{8,30}$/,
+                 message: 'Must have at least one lowercase letter, one uppercase letter, one digit and one special character.'
+               }
+             ]}
+            hasFeedback
+          >
+            <Input.Password placeholder='your password!' />
+          </Form.Item>
+          <Form.Item
+            name="confirm"
+            label="Re-type"
+            dependencies={['password']}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Please confirm your password!',
+              },
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject('The two passwords that you entered do not match!');
+                },
+              }),
+            ]}
+          >
+            <Input.Password placeholder='your password confirm!' />
+          </Form.Item>
+
+          <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
+            <Checkbox>Remember me</Checkbox>
           </Form.Item>
         </Form>
       </Modal>
