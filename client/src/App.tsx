@@ -34,7 +34,7 @@ function App() {
     <div>
       <MenuContext.Provider value={{ open: isOpen, setOpen: toggleOpen }}>
         <Header />
-      </MenuContext.Provider>
+
       <Switch>
           <Route path="/about">
             <Loader />
@@ -46,7 +46,8 @@ function App() {
             <Landing />
           </Route>
       </Switch>
-      <MobileMenu isOpen={isOpen} />
+      <MobileMenu />
+      </MenuContext.Provider>
       <Footer />
     </div>
   )
