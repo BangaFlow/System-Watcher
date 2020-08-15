@@ -2,8 +2,8 @@ import express from 'express'
 import session, { Store } from 'express-session'
 import cors from 'cors'
 import { SESSION_OPTIONS } from './config'
-import { register, login } from './routes'
-import { serverError, notFound } from './middleware'
+import { register, login, home } from './routes'
+import { serverError, notFound, active } from './middleware'
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -21,6 +21,10 @@ export const createApp = (store: Store) => {
     app.use(session({ ...SESSION_OPTIONS, store }))
 
     app.use(cors(corsOptions))
+
+    app.use(active)
+
+    app.use(home)
 
     app.use(login)
 

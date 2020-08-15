@@ -27,5 +27,9 @@ userSchema.pre<UserDocument>('save', async function () {
 userSchema.methods.matchesPassword = function (password: string) {
 	return compare(password, this.password)
 }
+// * a hook to chnage the behaviour of transform method
+userSchema.set('toJSON', {
+	transform: (doc, { __v, password, ...rest }, options) => rest
+  })
 
 export const User = model<UserDocument>('User', userSchema)

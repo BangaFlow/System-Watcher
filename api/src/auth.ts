@@ -6,6 +6,7 @@ export const isLoggedIn = (req: Request) => !!req.session!.userId
 export const logIn = (req: Request, userId: string) => {
     // ? we used, what we call a not null assertion operator
     req.session!.userId = userId
+    req.session!.createdAt = Date.now()
 }
 
 export const logOut = (req: Request, res: Response) =>
