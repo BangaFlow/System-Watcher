@@ -4,6 +4,7 @@ import { User } from '../models'
 import { logIn } from '../auth'
 import { guest, catchAsync } from '../middleware'
 import { BadRequest } from '../errors'
+import { sendMail } from '../helpers'
 
 const router = Router()
 
@@ -22,6 +23,14 @@ router.post('/register', guest, catchAsync(async (req, res) => {
 	const user = await User.create({ name, email, password })
 
 	logIn(req, user.id)
+
+	const link = user.verificationUrl()
+
+	await sendMail({
+		to: email,
+		subject: 'Verify your email address',
+		text: link
+	})
 		
     res.status(202).json({ message: 'Ok' })
 }))

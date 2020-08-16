@@ -1,12 +1,19 @@
-import{ Schema, model, Document } from 'mongoose'
+import{ Schema, model, Document, Model } from 'mongoose'
 import { hash, compare } from 'bcryptjs'
-import { BRCYPT_WORK_FACTOR } from '../config'
+import { APP_SECRET, APP_ORIGIN, BRCYPT_WORK_FACTOR, EMAIL_VERIFICATION_TIMEOUT } from '../config'
+import { createHash, createHmac, timingSafeEqual } from 'crypto'
 
 interface UserDocument extends Document {
-	email: string,
-	name: string,
-	password: string,
+	email: string
+	name: string
+	password: string
 	matchesPassword: (password: string) => Promise<boolean>
+	verificationUrl: () => string
+}
+
+interface UserModel extends Model<UserDocument> {
+	signVerificationUrl: (url: string) => string
+	hasValidVerificationUrl: (path: string, query: any) => boolean
 }
 
 const userSchema = new Schema({
@@ -27,9 +34,25 @@ userSchema.pre<UserDocument>('save', async function () {
 userSchema.methods.matchesPassword = function (password: string) {
 	return compare(password, this.password)
 }
+
+// ? Generate a URI_FOR_EMAIL_VERIFICATION
+userSchema.methods.verificationUrl = function () {
+	const token = createHash('sha1').update(this.email).digest('hex')
+	const expires = Date.now() + EMAIL_VERIFICATION_TIMEOUT
+  
+	const url = `${APP_ORIGIN}/email/verify?id=${this.id}&token=${token}&expires=${expires}`
+	const signature = User.signVerificationUrl(url)
+  
+	return `${url}&signature=${signature}`
+}
+
+// ? Sign the token generated the verifivation email
+userSchema.statics.signVerificationUrl = (url: string) =>
+  createHmac('sha256', APP_SECRET).update(url).digest('hex')
+
 // * a hook to chnage the behaviour of transform method
 userSchema.set('toJSON', {
 	transform: (doc, { __v, password, ...rest }, options) => rest
   })
 
-export const User = model<UserDocument>('User', userSchema)
+export const User = model<UserDocument, UserModel>('User', userSchema)
