@@ -3,10 +3,11 @@ import { hash, compare } from 'bcryptjs'
 import { APP_SECRET, APP_ORIGIN, BRCYPT_WORK_FACTOR, EMAIL_VERIFICATION_TIMEOUT } from '../config'
 import { createHash, createHmac, timingSafeEqual } from 'crypto'
 
-interface UserDocument extends Document {
+export interface UserDocument extends Document {
 	email: string
 	name: string
 	password: string
+	verifiedAt: Date
 	matchesPassword: (password: string) => Promise<boolean>
 	verificationUrl: () => string
 }
@@ -19,7 +20,8 @@ interface UserModel extends Model<UserDocument> {
 const userSchema = new Schema({
 	email: String,
 	name: String,
-	password: String
+	password: String,
+	verifiedAt: Date
 }, {
 	timestamps: true
 })
@@ -49,6 +51,15 @@ userSchema.methods.verificationUrl = function () {
 // ? Sign the token generated the verifivation email
 userSchema.statics.signVerificationUrl = (url: string) =>
   createHmac('sha256', APP_SECRET).update(url).digest('hex')
+
+// ? Verify the verification Url
+userSchema.statics.hasValidVerificationUrl = (path: string, query: any) => {
+const url = `${APP_ORIGIN}${path}`
+const original = url.slice(0, url.lastIndexOf('&'))
+const signature = User.signVerificationUrl(original)
+
+return timingSafeEqual(Buffer.from(signature), Buffer.from(query.signature)) && +query.expires > Date.now()
+}
 
 // * a hook to chnage the behaviour of transform method
 userSchema.set('toJSON', {

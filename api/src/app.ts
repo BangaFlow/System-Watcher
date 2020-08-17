@@ -2,37 +2,41 @@ import express from 'express'
 import session, { Store } from 'express-session'
 import cors from 'cors'
 import { SESSION_OPTIONS } from './config'
-import { register, login, home } from './routes'
+import { register, login, home, verify, reset } from './routes'
 import { serverError, notFound, active } from './middleware'
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true
+  origin: 'http://localhost:3000',
+  credentials: true
   }
 
 export const createApp = (store: Store) => {
     
-    const app = express()
+  const app = express()
+
+  app.use(express.json())
+
+  app.disable('x-powered-by')
+
+  app.use(session({ ...SESSION_OPTIONS, store }))
+
+  app.use(cors(corsOptions))
+
+  app.use(active)
+
+  app.use(home)
+
+  app.use(login)
+
+  app.use(register)
   
-    app.use(express.json())
+  app.use(verify)
 
-    app.disable('x-powered-by')
+  app.use(reset)
   
-    app.use(session({ ...SESSION_OPTIONS, store }))
+  app.use(notFound)
 
-    app.use(cors(corsOptions))
+  app.use(serverError)
 
-    app.use(active)
-
-    app.use(home)
-
-    app.use(login)
-
-    app.use(register)
-    
-    app.use(notFound)
-
-    app.use(serverError)
-  
-    return app
+  return app
 }
