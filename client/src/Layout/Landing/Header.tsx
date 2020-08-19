@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { MenuContext } from '../../App'
 import { loginFetch, logOutFetch, registerFetch } from '../../services'
 import swal from 'sweetalert'
+import ForgetPassword from '../../components/auth/ForgetPassword'
 
 const layout = {
   labelCol: {
@@ -39,6 +40,11 @@ function Header() {
   const [visibleLog, setVisibleLog] = useState(false)
   const [visibleSignUp, setVisibleSign] = useState(false)
   const [alert, setAlert] = useState('')
+  const [forget, setForget] =useState(false)
+
+  const switchPass = () => {
+    setForget(!forget)
+  }
 
   const handleLogout = async () => {
     await logOutFetch()
@@ -171,7 +177,11 @@ function Header() {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-      <Form
+      {
+        forget 
+        ? <ForgetPassword />
+        :
+        <Form
           style={{
             paddingTop: '3rem',
           }}
@@ -223,7 +233,11 @@ function Header() {
           <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
+          <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
+           <Button type='link' onClick={() => switchPass()}><strong>Forget Password ?</strong></Button>
+          </Form.Item>
         </Form>
+        }
       </Modal>
       <Modal
         title='Sign Up'
