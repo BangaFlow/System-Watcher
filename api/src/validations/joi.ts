@@ -23,7 +23,11 @@ export const Joi: ExtendedRoot = joi.extend(objectId)
 
 export const validate = async (schema: ObjectSchema, payload: any) => {
     try {
-        await schema.validateAsync(payload, { abortEarly: false })
+        await schema.validateAsync(payload, { 
+          abortEarly: false,
+          allowUnknown: true,
+          stripUnknown: true
+         })
     } catch (e) {
         throw new BadRequest(e)
     }

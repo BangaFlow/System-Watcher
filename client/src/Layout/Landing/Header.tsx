@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { MenuToggle } from './MenuToggle'
-import { Button, Form, Modal, Input, Checkbox, Tooltip } from 'antd'
+import { Button, Form, Modal, Input, Checkbox, Tooltip, Alert } from 'antd'
 import { NavLink } from 'react-router-dom'
 import { Store } from 'antd/lib/form/interface'
 import './header.css'
 import { motion } from 'framer-motion'
 import { MenuContext } from '../../App'
+import { loginFetch, logOutFetch, registerFetch } from '../../services'
+import swal from 'sweetalert'
 
 const layout = {
   labelCol: {
@@ -22,7 +24,6 @@ const tailLayout = {
   wrapperCol: {
     xs: {
       span: 24,
-      offset: 0,
     },
     sm: {
       span: 16,
@@ -37,6 +38,19 @@ function Header() {
   const [formSignUp] = Form.useForm()
   const [visibleLog, setVisibleLog] = useState(false)
   const [visibleSignUp, setVisibleSign] = useState(false)
+  const [alert, setAlert] = useState('')
+
+  const handleLogout = async () => {
+    await logOutFetch()
+    .then(data => {
+      console.log('Success:', data)
+        window.location.href = '/'
+    })
+    .catch((error) => {
+      console.error('Error:', error)
+      swal("Network Error", JSON.parse(error).message.replace(/"/g, ''), "error")
+    })
+  }
 
   const showModalLogIN = () => {
     setVisibleLog(true)
@@ -67,28 +81,42 @@ function Header() {
   }
 
   // For the form inside the log in modal
-  const onFinishLog = (values: Store) => {
+  const onFinishLog = async (values: Store) => {
     console.log('These are form values :', values)
-    if (values.username === 'khaled' && values.password === 'khaled') {
-      window.location.href = '/'
-      formLogIn.resetFields()
-    }
+    await loginFetch(values.email, values.password)
+    .then(data => {
+        console.log('Success:', data)
+        //   window.location.href = '/'
+        //   formLogIn.resetFields()
+    })
+    .catch((error) => {
+      console.error('Error:', error)
+      setAlert(JSON.parse(error).message.replace(/"/g, ''))
+      // swal("ERROR", error.toString(), "error")
+    })
   }
   
   // For the form inside the sign up modal
-  const onFinishSign = (values: Store) => {
+  const onFinishSign = async (values: Store) => {
     console.log('These are form values :', values)
-    if (values.username === 'khaled' && values.password === 'khaled') {
-      window.location.href = '/'
-      formLogIn.resetFields()
-    }
+    await registerFetch(values.name, values.email, values.password, values.passwordConfirmation)
+    .then(data => {
+        console.log('Success:', data)
+        //   window.location.href = '/'
+        //   formLogIn.resetFields()
+    })
+    .catch((error) => {
+      console.error('Error:', error)
+      setAlert(JSON.parse(error).message.replace(/"/g, ''))
+      // swal("ERROR", error.toString(), "error")
+    })
 	}
 	
   return (
     <div className='header__container'>
       <div className='flex--item'>
         <span>
-            <NavLink exact className='header--text header--logo' to='/'>
+            <NavLink exact className='header--text header--logo' onClick={ () => handleLogout() } to='/'>
               WATCHER
             </NavLink>
         </span>
@@ -153,13 +181,29 @@ function Header() {
           initialValues={{ remember: true }}
           onFinish={onFinishLog}
         >
+          {!!alert && 
           <Form.Item
-            label='Username'
-            name='username'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+          {...tailLayout}
+          >
+            <Alert message={alert} type="error" showIcon closable onClose={() => setAlert('')} />
+          </Form.Item>
+          }
+          <Form.Item
+            name='email'
+            label="E-mail"
+            rules={[
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ]}
             hasFeedback
           >
-            <Input placeholder='GoodCitizen12' />
+            <Input placeholder='client@domain.tn' />
           </Form.Item>
 
           <Form.Item
@@ -200,19 +244,26 @@ function Header() {
           initialValues={{ remember: true }}
           onFinish={onFinishSign}
         >
+          {!!alert && 
           <Form.Item
-            name="username"
+          {...tailLayout}
+          >
+            <Alert message={alert} type="error" showIcon closable onClose={() => setAlert('')} />
+          </Form.Item>
+          }
+          <Form.Item
+            name="name"
             label={
                 <Tooltip title="What do you want others to call you?">  
                   <span>
-                  Username&nbsp;
+                  Full Name&nbsp;
                   </span>
                 </Tooltip>
             }
             rules={[{ required: true, message: 'Please input your username!', whitespace: true }]}
             hasFeedback
           >
-            <Input placeholder='GoodCitizen12' />
+            <Input placeholder='Foulen Ben Foulen' />
           </Form.Item>
 
           <Form.Item
@@ -251,7 +302,7 @@ function Header() {
             <Input.Password placeholder='your password!' />
           </Form.Item>
           <Form.Item
-            name="confirm"
+            name="passwordConfirmation"
             label="Re-type"
             dependencies={['password']}
             hasFeedback

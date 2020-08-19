@@ -2,7 +2,7 @@ import Redis from 'ioredis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 import mongoose from 'mongoose'
-import { green, magenta, red } from 'chalk'
+import { green, magenta, redBright, red } from 'chalk'
 import { REDIS_OPTIONS, APP_PORT } from './config'
 import { MONGO_URI, MONGO_OPTIONS } from './config/db'
 import { createApp } from './app'
@@ -12,7 +12,7 @@ const warning = magenta
 
 ;(async () => {
   await mongoose.connect(MONGO_URI, MONGO_OPTIONS, ()=>{
-    console.log(`[${red('Atlas')}] ${success('Connected!')}`)
+    console.log(`[${redBright('Atlas')}] ${success('Connected!')}`)
   })
 
   const RedisStore = connectRedis(session)

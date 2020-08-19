@@ -10,6 +10,8 @@ const router = Router()
 
 router.post('/register', guest, catchAsync(async (req, res) => {
 
+	console.log(req.body)
+
 	await validate(registerSchema, req.body)
 
 	const { name, email, password } = req.body
