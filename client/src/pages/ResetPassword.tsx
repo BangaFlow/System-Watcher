@@ -1,7 +1,12 @@
-import React from 'react'
-import { Button, Form, Input } from 'antd'
+import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import queryString from 'query-string'
+import { Button, Form, Input, Alert } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import './reset_password.css'
+import { changeFetch } from '../services'
+import { RightOutlined } from '@ant-design/icons'
+
 const layout = {
   labelCol: {
 	xs: { span: 24 },
@@ -27,11 +32,34 @@ const tailLayout = {
 
 function ResetPassword() {
 
+	const location = useLocation()
+	const queryParams = queryString.parse(location.search)
+	const id = queryParams.id
+	const token = queryParams.token
+
 	const [form] = Form.useForm()
+	const [loading, setLoading] = useState(false)
+	const [alert, setAlert] = useState('')
 
 	// For the form inside the log in modal
 	const onFinish = async (values: Store) => {
 		console.log('These are form values :', values)
+		console.log(queryParams)
+		setLoading(true)
+		await changeFetch(id!.toString(), token!.toString(), values.password, values.passwordConfirmation)
+		.then(data => {
+			console.log('Success:', data)
+			setLoading(false)
+			//   window.location.href = '/'
+			form.resetFields()
+		})
+		.catch((error) => {
+			console.error('Error:', error)
+			setLoading(false)
+			setAlert(JSON.parse(error).message.replace(/"/g, ''))
+			form.resetFields()
+			// swal("ERROR", error.toString(), "error")
+		})
 	}
 
 	return (
@@ -46,6 +74,13 @@ function ResetPassword() {
 				className='forget__forground'
 				layout='vertical'
 			>
+				{!!alert && 
+				<Form.Item
+				{...tailLayout}
+				>
+					<Alert message={alert} type="error" showIcon closable onClose={() => setAlert('')} />
+				</Form.Item>
+				}
 				<Form.Item
 					name='password'
 					label="Password"
@@ -61,7 +96,7 @@ function ResetPassword() {
 					]}
 					hasFeedback
 				>
-					<Input.Password placeholder='New password' />
+					<Input.Password style={{ fontFamily: 'Arial'}} placeholder='Type new password' />
 				</Form.Item>
 
 				<Form.Item
@@ -84,10 +119,10 @@ function ResetPassword() {
 					]}
 					hasFeedback
 				>
-					<Input.Password placeholder='Password Confirmation' />
+					<Input.Password style={{ fontFamily: 'Arial'}} placeholder='Re-type new password' />
 				</Form.Item>
 				<Form.Item {...tailLayout}>
-				 <Button htmlType='submit'>Save Changes</Button>
+				 <Button icon={<RightOutlined />} loading={loading} htmlType='submit'>Save Changes</Button>
 				</Form.Item>
 			</Form>
 		</div>

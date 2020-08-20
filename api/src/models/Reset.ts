@@ -37,7 +37,7 @@ passwordResetSchema.pre<PasswordResetDocument>('save', function () {
 })
 
 passwordResetSchema.methods.url = function (plaintextToken: string) {
-  return `${APP_ORIGIN}/password/reset?id=${this.id}&token=${plaintextToken}`
+  return `http://localhost:3000/forget/reset?id=${this.id}&token=${plaintextToken}`
 }
 
 passwordResetSchema.methods.isValid = function (plaintextToken: string) {

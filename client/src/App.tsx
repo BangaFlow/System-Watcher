@@ -42,7 +42,7 @@ function App() {
             <Route path="/contact">
               <Contact />
             </Route>
-            <Route path="/forget">
+            <Route path="/forget/:slug">
               <ResetPassword />
             </Route>
             <Route path="/">
