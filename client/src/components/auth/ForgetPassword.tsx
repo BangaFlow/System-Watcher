@@ -1,28 +1,29 @@
 import React, { useState } from 'react'
-import { Form, Alert, Input } from 'antd'
+import { Form, Alert, Input, Button } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { forgetFetch } from '../../services'
+import { ArrowRightOutlined } from '@ant-design/icons'
 
 const layout = {
   labelCol: {
-    xs: { span: 24 },
-    sm: { span: 6 },
+	xs: { span: 24 },
+	sm: { span: 6 },
   },
   wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
+	xs: { span: 24 },
+	sm: { span: 16 },
   },
 }
 
 const tailLayout = {
   wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 16,
-      offset: 6,
-    },
+	xs: {
+	  span: 24,
+	},
+	sm: {
+	  span: 16,
+	  offset: 6,
+	},
   },
 }
 
@@ -81,6 +82,11 @@ function ForgetPassword() {
 			hasFeedback
 		>
 			<Input placeholder='client@domain.tn' />
+		</Form.Item>
+		<Form.Item
+		{...tailLayout}
+		>
+			<Button style={{ backgroundColor: "#5ea758", borderColor: '#5ea758'}} icon={ <ArrowRightOutlined />} type="primary" htmlType='submit' >Recover</Button>
 		</Form.Item>
 	</Form>
 	)
