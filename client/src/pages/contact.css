@@ -33,9 +33,9 @@ h1 {
     background-color: #086fcf;
 }
 
-@media screen and (max-width: 500px) {
+/* @media screen and (max-width: 500px) {
     .contact__form {
         margin: 3rem auto;
-        /* flex-basis: 90%; */
+        /flex-basis: 90%; 
     }
-}
+} */

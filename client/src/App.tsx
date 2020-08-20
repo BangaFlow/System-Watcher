@@ -9,6 +9,7 @@ import Footer from './Layout/Landing/Footer'
 import Header from './Layout/Landing/Header'
 import { useCycle } from 'framer-motion'
 import MobileMenu from './Layout/Landing/MobileMenu'
+import ResetPassword from './pages/ResetPassword'
 
 const Landing = React.lazy(() => 
   import(/* webpackChunkName: "Nav" */ './Layout/Landing/Hero')
@@ -34,19 +35,21 @@ function App() {
     <div>
       <MenuContext.Provider value={{ open: isOpen, setOpen: toggleOpen }}>
         <Header />
-
-      <Switch>
-          <Route path="/about">
-            <Loader />
-          </Route>
-          <Route path="/contact">
-            <Contact />
-          </Route>
-          <Route path="/">
-            <Landing />
-          </Route>
-      </Switch>
-      <MobileMenu />
+        <Switch>
+            <Route path="/about">
+              <Loader />
+            </Route>
+            <Route path="/contact">
+              <Contact />
+            </Route>
+            <Route path="/forget">
+              <ResetPassword />
+            </Route>
+            <Route path="/">
+              <Landing />
+            </Route>
+        </Switch>
+        <MobileMenu />
       </MenuContext.Provider>
       <Footer />
     </div>
