@@ -5,8 +5,6 @@ import { NavLink } from 'react-router-dom'
 import './header.css'
 import { motion } from 'framer-motion'
 import { MenuContext } from '../../App'
-import { logOutFetch } from '../../services'
-import swal from 'sweetalert'
 import SingIn from '../../components/auth/SingIn'
 import SingUp from '../../components/auth/SingUp'
 
@@ -17,19 +15,6 @@ function Header() {
  
   const [visibleLog, setVisibleLog] = useState(false)
   const [visibleSignUp, setVisibleSign] = useState(false)
-
-
-  const handleLogout = async () => {
-    await logOutFetch()
-    .then(data => {
-      console.log('Success:', data)
-        window.location.href = '/'
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-      swal("Network Error", JSON.parse(error).message.replace(/"/g, ''), "error")
-    })
-  }
 
   const showModalLogIN = () => {
     setVisibleLog(true)
@@ -43,7 +28,7 @@ function Header() {
     <div className='header__container'>
       <div className='flex--item'>
         <span>
-            <NavLink exact className='header--text header--logo' onClick={ () => handleLogout() } to='/'>
+            <NavLink exact className='header--text header--logo' to='/'>
               WATCHER
             </NavLink>
         </span>
