@@ -62,6 +62,12 @@
     z-index: 3;
   }
 
+.header--button:hover {
+color: #f7eeee !important;
+border-color: #e03333 !important;
+background-color: #e03333 !important;
+}
+
 @media screen and ( max-width: 700px) {
     .header__container {
         width: unset;

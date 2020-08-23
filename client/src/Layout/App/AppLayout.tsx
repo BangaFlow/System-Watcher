@@ -1,11 +1,28 @@
 import React from 'react'
 import './layout.css'
 import { Layout, Menu, Space, Button, Dropdown } from 'antd'
-import { UploadOutlined, UserOutlined, VideoCameraOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined } from '@ant-design/icons'
+import { UploadOutlined, UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined } from '@ant-design/icons'
 import { Switch, Route, NavLink, RouteComponentProps } from 'react-router-dom'
 import { logOutFetch } from '../../services'
 import swal from 'sweetalert'
+import Report from '../../components/report/Report'
 
+// ? Sidebar Routes
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    sidebar: () => <h1>Home Content</h1>
+  },
+  {
+    path: '/about',
+    sidebar: () => <h1>About Content</h1>,
+  },
+  {
+    path: '/report',
+    sidebar: () => <Report />,
+  }
+]
 
 const handleLogout = async () => {
   await logOutFetch()
@@ -19,7 +36,7 @@ const handleLogout = async () => {
   })
 }
 
-const menu = (
+const menu: JSX.Element = (
   <Menu >
     <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
@@ -46,7 +63,7 @@ function AppLayout(props: RouteComponentProps) {
   return (
     <Layout>
       <Sider
-        breakpoint="lg"
+        breakpoint="md"
         collapsedWidth="0"
         onBreakpoint={broken => {
           console.log(broken)
@@ -60,35 +77,33 @@ function AppLayout(props: RouteComponentProps) {
           <Menu.Item key="1" icon={<UserOutlined />}>
             <NavLink to='/app'>Home</NavLink>
           </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            <NavLink to='/app/about'>About</NavLink>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
-          </Menu.Item>
-          <Menu.Item key="4" icon={<UserOutlined />}>
-            nav 4
+          <Menu.Item key="2" icon={<UploadOutlined />}>
+            <NavLink to='/app/report'>Report</NavLink>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
           <Space style={{ float: 'right', marginRight: '5rem' }}>
-            <span>Khaled Saidi</span>
+            <span style={{ marginRight: '1.5rem', letterSpacing: '1.5px' }}>Khaled Saidi</span>
           <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <Button icon={<UserOutlined />} shape='circle' />
           </Dropdown>
           </Space>
         </Header>
-        <Content style={{ margin: '24px 16px 0' }}>
-          <div className="site-layout-background" style={{ padding: 24, minHeight: '83.3vh' }}>
+        <Content style={{ margin: '48px 24px 0' }}>
+          <div className="site-layout-background" style={{ padding: 24, minHeight: '80.8vh' }}>
           <Switch>
-            <Route exact path={`${match.url}/about`} >
-              <div>Content About</div>
-            </Route>
-            <Route path='/'>
-              <div>Content Home</div>
-            </Route>
+            {routes.map((route, index) => (
+              //* Render more <Route>s with the same paths as
+              //* above, but different components this time.
+              <Route
+                key={index}
+                path={`${match.url}${route.path}`}
+                exact={route.exact}
+                children={<route.sidebar />}
+              />
+            ))}  
           </Switch>
           </div>
         </Content>

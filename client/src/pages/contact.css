@@ -27,10 +27,12 @@ h1 {
 
 .contact__button {
     background-color: #095caa;
+    border-color: #095caa;
 }
 
 .contact__button:hover {
     background-color: #086fcf;
+    border-color: #086fcf;
 }
 
 /* @media screen and (max-width: 500px) {

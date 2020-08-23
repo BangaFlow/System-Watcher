@@ -1,17 +1,22 @@
 import React, { useState } from 'react'
-import { Input, Form, Alert, Tooltip, Modal } from 'antd'
-import { registerFetch } from '../../services'
-import { Store } from 'antd/lib/form/interface'
-import { useHistory } from 'react-router-dom'
+import { Form, Alert, Tooltip, Input, Button } from 'antd';
+import { Store } from 'antd/lib/form/interface';
+import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
 const layout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 6 },
+    lg: {
+      span: 12,
+      offset: 6,
+    },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16 },
+    lg: {
+      span: 12,
+      offset: 6,
+    },
   },
 }
 
@@ -20,63 +25,43 @@ const tailLayout = {
     xs: {
       span: 24,
     },
-    sm: {
-      span: 16,
+    lg: {
+      span: 12,
       offset: 6,
     },
   },
 }
 
-function SingUp({visible, setVisible}: { visible: boolean, setVisible: React.Dispatch<React.SetStateAction<boolean>>}) {
+function Report() {
 
-	const [form] = Form.useForm()
-	const [alert, setAlert] = useState('')
-	const history = useHistory()
-	
-	// Handle the sing up moodal footer elements actions
-	const handleSignOk = () => {
-    form.submit()
-  }
+  const [form] = Form.useForm()
+  const [alert, setAlert] = useState('')
 
-  const handleSignCancel = () => {
-    setVisible(false)
-    form.resetFields()
-	}
-	
-	// For the form inside the sign up modal
-	const onFinishSign = async (values: Store) => {
+	const onFinish = async (values: Store) => {
 		console.log('These are form values :', values)
-		await registerFetch(values.name, values.email, values.password, values.passwordConfirmation)
-		.then(data => {
-				console.log('Success:', data)
-				form.resetFields()
-				history.push('/app')
-		})
-		.catch((error) => {
-			console.error('Error:', error)
-			setAlert(JSON.parse(error).message.replace(/"/g, ''))
-			// swal("ERROR", error.toString(), "error")
-		})
+		// await registerFetch(values.name, values.email, values.password, values.passwordConfirmation)
+		// .then(data => {
+		// 		console.log('Success:', data)
+		// 		form.resetFields()
+		// 		history.push('/app')
+		// })
+		// .catch((error) => {
+		// 	console.error('Error:', error)
+		// 	setAlert(JSON.parse(error).message.replace(/"/g, '')) 
+		// 	// swal("ERROR", error.toString(), "error")
+		// })
 	}
 
-	return (
-		<Modal
-		title='Sign Up'
-		visible={visible}
-		centered
-		okText='Sign Up'
-		cancelText='Go Back'
-		onOk={handleSignOk}
-		onCancel={handleSignCancel}
-	>
-	<Form
+  return (
+    <Form
 			style={{
-				paddingTop: '3rem',
+				paddingTop: '8rem',
 			}}
 			{...layout}
 			name='basic'
 			form={form}
-			onFinish={onFinishSign}
+			onFinish={onFinish}
+			layout='vertical'
 		>
 			{!!alert && 
 			<Form.Item
@@ -157,9 +142,15 @@ function SingUp({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 			>
 				<Input.Password placeholder='your password confirm!' />
 			</Form.Item>
+			<Form.Item
+			label=' '
+			{...tailLayout}
+			>
+				<Button icon={ <ArrowLeftOutlined />} type="primary" htmlType='submit' >Cancel</Button>
+				<Button style={{ backgroundColor: "#5ea758", borderColor: '#5ea758', float: 'right'}} icon={ <ArrowRightOutlined />} type="primary" htmlType='submit' >Confirm</Button>
+			</Form.Item>
 		</Form>
-	</Modal>
-	)
+  )
 }
 
-export default SingUp
+export default Report

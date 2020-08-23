@@ -3,6 +3,7 @@ import { Alert, Button, Checkbox, Form, Input, Modal } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { loginFetch } from '../../services'
 import ForgetPassword from './ForgetPassword'
+import { useHistory } from 'react-router-dom'
 
 const layout = {
   labelCol: {
@@ -31,34 +32,39 @@ function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 	const [formLogIn] = Form.useForm()
 	const [alert, setAlert] = useState('')
 	const [forget, setForget] =useState(false)
+	const [loading, setLoading] = useState(false)
+	const history = useHistory()
 
   const switchPass = () => {
-	setForget(!forget)
+		setForget(!forget)
 	}
 	
 	// Handle the login moodal footer elements actions
   const handleOk = () => {
-	formLogIn.submit()
+		formLogIn.submit()
   }
 
   const handleCancel = () => {
-			setVisible(false)
-			setForget(false)
-			formLogIn.resetFields()
+		setVisible(false)
+		setForget(false)
+		formLogIn.resetFields()
 	}
 
 	// For the form inside the log in modal
 	const onFinishLog = async (values: Store) => {
 		console.log('These are form values :', values)
+		setLoading(true)
 		await loginFetch(values.email, values.password)
 		.then(data => {
-				console.log('Success:', data)
-				//   window.location.href = '/'
-				//   formLogIn.resetFields()
+			console.log('Success:', data)
+			formLogIn.resetFields()
+			setLoading(false)
+			history.push('/app')
 		})
 		.catch((error) => {
 			console.error('Error:', error)
 			setAlert(JSON.parse(error).message.replace(/"/g, ''))
+			setLoading(false)
 			// swal("ERROR", error.toString(), "error")
 		})
 	}
@@ -73,6 +79,7 @@ function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 			onOk={handleOk}
 			onCancel={handleCancel}
 			okButtonProps={{disabled: forget ? true : false}}
+			confirmLoading={loading}
 	  >
 	  {
 			forget 
@@ -88,6 +95,7 @@ function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 				form={formLogIn}
 				initialValues={{ remember: true }}
 				onFinish={onFinishLog}
+				onKeyPress={ (event) => { if (event.charCode === 13) formLogIn.submit() }}
 			>
 				{!!alert && 
 				<Form.Item

@@ -16,7 +16,8 @@ function useWindowSize() {
 		setSize([window.innerWidth, window.innerHeight]);
 	  }
 	  window.addEventListener('resize', updateSize);
-	  updateSize();
+		//? we call it so upon render takes effect
+		updateSize();
 	  return () => window.removeEventListener('resize', updateSize);
 	}, [])
 	return size
