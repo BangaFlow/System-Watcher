@@ -30,6 +30,11 @@ const tailLayout = {
   },
 }
 
+declare interface alertAntd {
+	message: string
+	type: "success" | "info" | "warning" | "error" | undefined
+}
+
 function ResetPassword() {
 
 	const location = useLocation()
@@ -37,9 +42,12 @@ function ResetPassword() {
 	const id = queryParams.id
 	const token = queryParams.token
 
+	const initialAlert: alertAntd = {message: '', type: 'error'}
+
 	const [form] = Form.useForm()
 	const [loading, setLoading] = useState(false)
-	const [alert, setAlert] = useState('')
+	const [alert, setAlert] = useState(initialAlert)
+	
 
 	// For the form inside the log in modal
 	const onFinish = async (values: Store) => {
@@ -52,11 +60,12 @@ function ResetPassword() {
 			setLoading(false)
 			//   window.location.href = '/'
 			form.resetFields()
+			setAlert({ message: 'You have successfully changed your password, you may now log in.', type: 'success'})
 		})
 		.catch((error) => {
 			console.error('Error:', error)
 			setLoading(false)
-			setAlert(JSON.parse(error).message.replace(/"/g, ''))
+			setAlert({...initialAlert, message: JSON.parse(error).message.replace(/"/g, '')})
 			form.resetFields()
 			// swal("ERROR", error.toString(), "error")
 		})
@@ -74,11 +83,11 @@ function ResetPassword() {
 				className='forget__forground'
 				layout='vertical'
 			>
-				{!!alert && 
+				{!!alert.message && 
 				<Form.Item
 				{...tailLayout}
 				>
-					<Alert message={alert} type="error" showIcon closable onClose={() => setAlert('')} />
+					<Alert message={alert.message} type={alert.type} showIcon closable onClose={() => setAlert(initialAlert)} />
 				</Form.Item>
 				}
 				<Form.Item

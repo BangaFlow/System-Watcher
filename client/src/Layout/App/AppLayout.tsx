@@ -1,11 +1,12 @@
 import React from 'react'
 import './layout.css'
 import { Layout, Menu, Space, Button, Dropdown } from 'antd'
-import { UploadOutlined, UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined } from '@ant-design/icons'
+import { UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined, HistoryOutlined, AlertOutlined, HomeOutlined } from '@ant-design/icons'
 import { Switch, Route, NavLink, RouteComponentProps } from 'react-router-dom'
 import { logOutFetch } from '../../services'
 import swal from 'sweetalert'
 import Report from '../../components/report/Report'
+import History from '../../components/report/History'
 
 // ? Sidebar Routes
 const routes = [
@@ -15,8 +16,8 @@ const routes = [
     sidebar: () => <h1>Home Content</h1>
   },
   {
-    path: '/about',
-    sidebar: () => <h1>About Content</h1>,
+    path: '/history',
+    sidebar: () => <History />,
   },
   {
     path: '/report',
@@ -74,11 +75,14 @@ function AppLayout(props: RouteComponentProps) {
       >
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
+          <Menu.Item key="1" icon={<HomeOutlined />}>
             <NavLink to='/app'>Home</NavLink>
           </Menu.Item>
-          <Menu.Item key="2" icon={<UploadOutlined />}>
+          <Menu.Item key="2" icon={<AlertOutlined />}>
             <NavLink to='/app/report'>Report</NavLink>
+          </Menu.Item>
+          <Menu.Item key="3" icon={<HistoryOutlined />}>
+            <NavLink to='/app/history'>History</NavLink>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -92,7 +96,8 @@ function AppLayout(props: RouteComponentProps) {
           </Space>
         </Header>
         <Content style={{ margin: '48px 24px 0' }}>
-          <div className="site-layout-background" style={{ padding: 24, minHeight: '80.8vh' }}>
+          {/* 24 */}
+          <div className="site-layout-background" style={{ padding: 0, minHeight: '80.8vh' }}>
           <Switch>
             {routes.map((route, index) => (
               //* Render more <Route>s with the same paths as

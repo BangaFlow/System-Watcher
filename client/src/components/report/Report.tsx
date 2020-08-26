@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Alert, Tooltip, Input, Button } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
@@ -35,7 +35,8 @@ const tailLayout = {
 function Report() {
 
   const [form] = Form.useForm()
-  const [alert, setAlert] = useState('')
+	const [alert, setAlert] = useState('')
+	const [loc, setLoc] = useState('')
 
 	const onFinish = async (values: Store) => {
 		console.log('These are form values :', values)
@@ -52,11 +53,45 @@ function Report() {
 		// })
 	}
 
+	function getLocation() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				console.log(position)
+				setLoc(position.coords.latitude +','+ position.coords.longitude)
+			},
+			(error) => {
+				switch(error.code) {
+					case error.PERMISSION_DENIED:
+						window.alert("User denied the request for Geolocation.")
+						break;
+					case error.POSITION_UNAVAILABLE:
+						window.alert("Location information is unavailable.")
+						break;
+					case error.TIMEOUT:
+						window.alert("The request to get user location timed out.")
+						break;
+					default:
+						window.alert("An unknown error occurred.")
+						break;
+				}
+			}
+			)
+		} else {
+			setLoc("Geolocation is not supported by this browser.")
+		}
+	}
+	
+	useEffect(() => {
+		getLocation()
+	}, [])
+
   return (
+		<>
+		<div style={{ width: '100%', textAlign: 'center'}} >
+			<label style={{ marginRight: '15rem'}}> Your Current Position: </label>
+			<img style={{margin: '1rem auto'}} alt='google maps' src={"https://maps.googleapis.com/maps/api/staticmap?center=" + loc + "&zoom=14&size=400x300&sensor=false&markers=color:red%7C"+ loc +"&key=AIzaSyDb8QZJCD-MmS9L2tJkMW30bxKnsqZ6ZRc"} />
+		</div>
     <Form
-			style={{
-				paddingTop: '8rem',
-			}}
 			{...layout}
 			name='basic'
 			form={form}
@@ -71,28 +106,24 @@ function Report() {
 			</Form.Item>
 			}
 			<Form.Item
-				name="name"
+				name="state"
 				label={
-						<Tooltip title="What do you want others to call you?">  
+						<Tooltip title="Which city you are at now?">  
 							<span>
-							Full Name&nbsp;
+							State - City &nbsp;
 							</span>
 						</Tooltip>
 				}
 				rules={[{ required: true, message: 'Please input your username!', whitespace: true }]}
 				hasFeedback
 			>
-				<Input placeholder='Foulen Ben Foulen' />
+				<Input placeholder='Ariana - Arianna Soghra' />
 			</Form.Item>
 
 			<Form.Item
-				name="email"
-				label="E-mail"
+				name="agency"
+				label="Agency"
 				rules={[
-					{
-						type: 'email',
-						message: 'The input is not valid E-mail!',
-					},
 					{
 						required: true,
 						message: 'Please input your E-mail!',
@@ -100,47 +131,35 @@ function Report() {
 				]}
 				hasFeedback
 			>
-				<Input placeholder='abc@example.tn' />
+				<Input placeholder='POSTE' />
 			</Form.Item>
 
 			<Form.Item
-				 name="password"
-				 label="Password"
+				 name="problem"
+				 label="Problem"
 				 rules={[
 					 {
 						 required: true,
-						 message: 'Please input your password!',
+						 message: 'Please state the reason behind this report!',
 					 },
-					 {
-						 pattern: /^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)(?=\S*[^\w\s])\S{8,30}$/,
-						 message: 'Must have at least one lowercase letter, one uppercase letter, one digit and one special character.'
-					 }
 				 ]}
 				hasFeedback
 			>
-				<Input.Password placeholder='your password!' />
+				<Input placeholder='system is down' />
 			</Form.Item>
 			<Form.Item
-				name="passwordConfirmation"
-				label="Re-type"
-				dependencies={['password']}
+				name="location"
+				label="Location"
 				hasFeedback
+				validateStatus='validating'
 				rules={[
 					{
 						required: true,
-						message: 'Please confirm your password!',
+						message: 'Please let us verify your position!',
 					},
-					({ getFieldValue }) => ({
-						validator(rule, value) {
-							if (!value || getFieldValue('password') === value) {
-								return Promise.resolve();
-							}
-							return Promise.reject('The two passwords that you entered do not match!');
-						},
-					}),
 				]}
 			>
-				<Input.Password placeholder='your password confirm!' />
+				<Input placeholder={loc} />
 			</Form.Item>
 			<Form.Item
 			label=' '
@@ -150,6 +169,7 @@ function Report() {
 				<Button style={{ backgroundColor: "#5ea758", borderColor: '#5ea758', float: 'right'}} icon={ <ArrowRightOutlined />} type="primary" htmlType='submit' >Confirm</Button>
 			</Form.Item>
 		</Form>
+		</>
   )
 }
 
