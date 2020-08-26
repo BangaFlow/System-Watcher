@@ -42,19 +42,19 @@ userSchema.methods.verificationUrl = function () {
 	const token = createHash('sha1').update(this.email).digest('hex')
 	const expires = Date.now() + EMAIL_VERIFICATION_TIMEOUT
   
-	const url = `${APP_ORIGIN}/email/verify?id=${this.id}&token=${token}&expires=${expires}`
+	const url = `http://localhost:3000/email/verify?id=${this.id}&token=${token}&expires=${expires}`
 	const signature = User.signVerificationUrl(url)
   
 	return `${url}&signature=${signature}`
 }
 
-// ? Sign the token generated the verifivation email
+// ? generate signature
 userSchema.statics.signVerificationUrl = (url: string) =>
   createHmac('sha256', APP_SECRET).update(url).digest('hex')
 
 // ? Verify the verification Url
 userSchema.statics.hasValidVerificationUrl = (path: string, query: any) => {
-const url = `${APP_ORIGIN}${path}`
+const url = `http://localhost:3000${path}`
 const original = url.slice(0, url.lastIndexOf('&'))
 const signature = User.signVerificationUrl(original)
 

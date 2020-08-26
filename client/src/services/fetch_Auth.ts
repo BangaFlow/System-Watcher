@@ -91,3 +91,25 @@ export const changeFetch = async (id: string, token: string, password: string, p
 		  .catch(error => { reject(error) })
 	  })
 }
+
+export const verifyFetch = async (id: string, token: string, expires: string, signature: string) => {
+
+	return new Promise((resolve, reject) => {
+		fetch(`http://localhost:5000/email/verify?id=${id}&token=${token}&expires=${expires}&signature=${signature}`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		  .then(resp => {
+			if (!resp.ok) {
+			  resp.text().then(text => reject(text))
+			}
+			else {
+			  resolve(resp.json());
+			}
+		  })
+		  .catch(error => { reject(error) })
+	  })
+}

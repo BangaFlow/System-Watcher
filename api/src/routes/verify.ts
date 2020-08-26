@@ -14,7 +14,7 @@ router.post('/email/verify', catchAsync(async (req, res) => {
   const { id } = req.query
 
   const user = await User.findById(id).select('verifiedAt')
-
+  
   if (!user || !User.hasValidVerificationUrl(req.originalUrl, req.query)) {
     throw new BadRequest('Invalid activation link')
   }

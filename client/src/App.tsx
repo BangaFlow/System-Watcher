@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, Suspense } from 'react'
 import {
   Switch,
   Route
@@ -10,6 +10,7 @@ import Header from './Layout/Landing/Header'
 import { useCycle } from 'framer-motion'
 import MobileMenu from './Layout/Landing/MobileMenu'
 import ResetPassword from './pages/ResetPassword'
+import Verify from './components/auth/Verify'
 
 const Landing = React.lazy(() => 
   import(/* webpackChunkName: "Nav" */ './Layout/Landing/Hero')
@@ -44,6 +45,9 @@ function App() {
             </Route>
             <Route path="/forget/:slug">
               <ResetPassword />
+            </Route>
+            <Route path="/email/:slug">
+              <Verify />  
             </Route>
             <Route path="/">
               <Landing />
