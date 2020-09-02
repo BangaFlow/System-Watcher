@@ -1,4 +1,4 @@
-import React, { createContext, Suspense } from 'react'
+import React, { createContext } from 'react'
 import {
   Switch,
   Route

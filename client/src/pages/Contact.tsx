@@ -49,10 +49,10 @@ function Contact() {
 					<h1>Contact Us</h1>
 					<span>Window size: {width} x {height}</span>
 				</Form.Item>
-				<Form.Item name={['user', 'name']} label={<strong className='contact--text'>Name</strong>} rules={[{ required: true }]}>
+				<Form.Item name='name' label={<strong className='contact--text'>Name</strong>} rules={[{ required: true }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item name={['user', 'email']} label={<strong className='contact--text'>Email</strong>} rules={[{ type: 'email' }]}>
+				<Form.Item name='email' label={<strong className='contact--text'>Email</strong>} rules={[{ type: 'email' }]}>
 					<Input />
 				</Form.Item>
 				<Form.Item name={['user', 'introduction']} label={<strong className='contact--text'>Introduction</strong>}>

@@ -5,8 +5,8 @@ import { UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined, Histo
 import { Switch, Route, NavLink, RouteComponentProps } from 'react-router-dom'
 import { logOutFetch } from '../../services'
 import swal from 'sweetalert'
-import Report from '../../components/report/Report'
 import History from '../../components/report/History'
+import Map from '../../components/location/Map'
 
 // ? Sidebar Routes
 const routes = [
@@ -21,7 +21,9 @@ const routes = [
   },
   {
     path: '/report',
-    sidebar: () => <Report />,
+    sidebar: () => <div style={{ width: '100%'}} >
+                    <Map/>
+                  </div>,
   }
 ]
 
@@ -66,9 +68,9 @@ function AppLayout(props: RouteComponentProps) {
       <Sider
         breakpoint="md"
         collapsedWidth="0"
-        onBreakpoint={broken => {
-          console.log(broken)
-        }}
+        // onBreakpoint={broken => {
+        //   console.log(broken)
+        // }}
         onCollapse={(collapsed, type) => {
           console.log(collapsed, type)
         }}
@@ -97,7 +99,7 @@ function AppLayout(props: RouteComponentProps) {
         </Header>
         <Content style={{ margin: '48px 24px 0' }}>
           {/* 24 */}
-          <div className="site-layout-background" style={{ padding: 0, minHeight: '80.8vh' }}>
+          <div className="site-layout-background" style={{ padding: '24px 0', minHeight: '80.8vh' }}>
           <Switch>
             {routes.map((route, index) => (
               //* Render more <Route>s with the same paths as
