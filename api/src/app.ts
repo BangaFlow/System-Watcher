@@ -2,7 +2,7 @@ import express from 'express'
 import session, { Store } from 'express-session'
 import cors from 'cors'
 import { SESSION_OPTIONS } from './config'
-import { register, login, home, verify, reset } from './routes'
+import { register, login, home, verify, reset, report } from './routes'
 import { serverError, notFound, active } from './middleware'
 
 const corsOptions = {
@@ -29,6 +29,8 @@ export const createApp = (store: Store) => {
   app.use(login)
 
   app.use(register)
+
+  app.use(report)
   
   app.use(verify)
 
