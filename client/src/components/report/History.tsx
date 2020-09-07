@@ -1,37 +1,40 @@
 import React from 'react'
-import { List, Avatar } from 'antd'
+import { Table } from 'antd'
+
+const columns = [
+  {
+    title: 'Name (all screens)',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text: any) => <span>{text}</span>,
+  },
+  {
+    title: 'Age (medium screen or bigger)',
+    dataIndex: 'age',
+    key: 'age',
+    responsive: ['md'],
+  },
+  {
+    title: 'Address (large screen or bigger)',
+    dataIndex: 'address',
+    key: 'address',
+    responsive: ['lg'],
+  },
+];
 
 const data = [
   {
-    title: 'Ant Design Title 1',
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
   },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  }
-]
+];
 
 function History() {
   return (
-    <List
-    style={{ margin: '3rem 5rem', borderColor: 'red'}}
-    itemLayout="horizontal"
-    dataSource={data}
-    renderItem={item => (
-      <List.Item>
-        <List.Item.Meta
-          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-          title={<a href="https://ant.design">{item.title}</a>}
-          description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-        />
-      </List.Item>
-      )}
-    />
+    // @ts-ignore
+    <Table style={{ padding: '0 24px'}} columns={columns} dataSource={data} />
   )
 }
 

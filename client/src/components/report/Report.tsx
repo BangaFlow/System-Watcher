@@ -134,7 +134,7 @@ function Report({userLocation} : {userLocation: location}) {
 					}
 					rules={[{ required: true, message: 'Please press locate button!', whitespace: true }]}
 				>
-					<Input.Search prefix='TUN  ' loading={loadGeo} enterButton="Locate" placeholder='Press locate to fill the address'  onSearch={() => reverseGeocode()} />
+					<Input.Search readOnly prefix='TUN  ' loading={loadGeo} enterButton="Locate" placeholder='Press locate to fill the address'  onSearch={() => reverseGeocode()} />
 				</Form.Item>
 
 				<Form.Item

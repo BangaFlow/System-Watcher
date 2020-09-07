@@ -7,13 +7,14 @@ import { logOutFetch } from '../../services'
 import swal from 'sweetalert'
 import History from '../../components/report/History'
 import Map from '../../components/location/Map'
+import Home from '../../components/report/Home'
 
 // ? Sidebar Routes
 const routes = [
   {
     path: '/',
     exact: true,
-    sidebar: () => <h1>Home Content</h1>
+    sidebar: () => <Home />
   },
   {
     path: '/history',
