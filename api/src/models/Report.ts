@@ -6,6 +6,8 @@ export interface ReportDocument extends Document {
   agencyLocationText: String
   userCoord: {lat: Number, lng: Number}
   agencyCoord: {lat: Number, lng: Number}
+  distance: Number,
+  user: String
 }
 
 const reportSchema = new Schema({
@@ -13,7 +15,12 @@ const reportSchema = new Schema({
 	userLocationText: String,
   agencyLocationText: String,
   userCoord: {lat: Number, lng: Number},
-  agencyCoord: {lat: Number, lng: Number}
+  agencyCoord: {lat: Number, lng: Number},
+  distance: Number,
+  user: { 
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
 }, {
 	timestamps: true
 })

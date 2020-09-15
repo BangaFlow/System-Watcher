@@ -2,13 +2,15 @@ declare type locAdd = {
   lat: number
   lng: number
 }
-export const addReportFetch = async (type: string, userLocationText: string, agencyLocationText: string, userCoord: locAdd, agencyCoord: locAdd) => {
+export const addReportFetch = async (type: string, userLocationText: string, agencyLocationText: string, userCoord: locAdd, agencyCoord: locAdd, distance: number, user : string) => {
 	const query = `{ 
     "type": "${type}", 
     "userLocationText": "${userLocationText}",
     "agencyLocationText": "${agencyLocationText}",
     "userCoord": "${userCoord}",
-    "agencyCoord": "${agencyCoord}"
+		"agencyCoord": "${agencyCoord}",
+		"distance": "${distance}",
+		"user": "${user}"
    }`
 
 	return new Promise((resolve, reject) => {

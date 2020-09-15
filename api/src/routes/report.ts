@@ -8,7 +8,7 @@ const router = Router()
 
 router.post('/report/add', /* auth, */ catchAsync(async (req, res) => {
    
-    const { type, userLocationText, agencyLocationText, userCoord, agencyCoord } = req.body
+    const { type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user } = req.body
    
     const report = await Report.findOne().sort({ _id: -1 })
 
@@ -21,7 +21,7 @@ router.post('/report/add', /* auth, */ catchAsync(async (req, res) => {
         throw new Unauthorized('You can\'t add a new report untill 20 minutes is passed!')
     }
     
-    await Report.create({ type, userLocationText, agencyLocationText, userCoord, agencyCoord})
+    await Report.create({ type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user})
     
     res.json({ message: 'OK'})
 }))

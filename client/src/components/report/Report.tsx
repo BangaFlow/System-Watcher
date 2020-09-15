@@ -84,7 +84,7 @@ function Report({userLocation} : {userLocation: location}) {
 					const distance = point1.distance(point2).toFixed(2)
 					parseInt(distance) <= 50 ? setValidateStatus('success') : setValidateStatus('error')
 					form.setFieldsValue({distance})
-					addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng })
+					addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distance), '5f476fc884ae5c377ca00156')
 					.then(data => {
 						console.log('Success:', data)
 						form.resetFields()
