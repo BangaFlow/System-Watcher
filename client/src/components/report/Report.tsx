@@ -82,19 +82,26 @@ function Report({userLocation} : {userLocation: location}) {
 					const point1 = lineString.extractPoint(0)
 					const point2 = lineString.extractPoint(1)
 					const distance = point1.distance(point2).toFixed(2)
-					parseInt(distance) <= 50 ? setValidateStatus('success') : setValidateStatus('error')
-					form.setFieldsValue({distance})
-					addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distance), '5f476fc884ae5c377ca00156')
-					.then(data => {
-						console.log('Success:', data)
-						form.resetFields()
-					})
-					.catch((error) => {
-						console.error('Error:', error)
-						setAlert(JSON.parse(error).message.replace(/"/g, ''))
+					if (parseInt(distance) <= 50) {
+						setValidateStatus('success')
+						form.setFieldsValue({distance})
+						addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distance), '5f476fc884ae5c377ca00156')
+						.then(data => {
+							console.log('Success:', data)
+							setLoading(false)
+							form.resetFields()
+						})
+						.catch((error) => {
+							console.error('Error:', error)
+							setAlert(JSON.parse(error).message.replace(/"/g, ''))
+							setLoading(false)
+							// swal("ERROR", error.toString(), "error")
+						})
+					} else {
 						setLoading(false)
-						// swal("ERROR", error.toString(), "error")
-					})
+						setValidateStatus('error')
+						form.setFieldsValue({distance: distance + ' is greater than 50.00 meters!'})
+					} 
 				} else {
 					form.setFieldsValue({distance: 'There\'s no such agency at a radius of 2km'})
 					setValidateStatus('error')
@@ -204,7 +211,7 @@ function Report({userLocation} : {userLocation: location}) {
 					hasFeedback
 					validateStatus={validateStatus}
 				>
-					<Input placeholder='You must be at distance =< 50 meters' suffix='Meters' disabled />
+					<Input placeholder='You must be at distance <= 50.00 meters' suffix='Meters' disabled />
 				</Form.Item>
 				<Form.Item
 				{...tailLayout}
