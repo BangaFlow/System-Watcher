@@ -3,15 +3,15 @@ declare type locAdd = {
   lng: number
 }
 export const addReportFetch = async (type: string, userLocationText: string, agencyLocationText: string, userCoord: locAdd, agencyCoord: locAdd, distance: number, user : string) => {
-	const query = `{ 
-    "type": "${type}", 
-    "userLocationText": "${userLocationText}",
-    "agencyLocationText": "${agencyLocationText}",
-    "userCoord": "${userCoord}",
-		"agencyCoord": "${agencyCoord}",
-		"distance": "${distance}",
-		"user": "${user}"
-   }`
+	const query = { 
+    type, 
+    userLocationText,
+    agencyLocationText,
+    userCoord,
+		agencyCoord,
+		distance,
+		user
+   }
 
 	return new Promise((resolve, reject) => {
 		fetch('http://localhost:5000/report/add', {
@@ -20,7 +20,7 @@ export const addReportFetch = async (type: string, userLocationText: string, age
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: query,
+			body: JSON.stringify(query),
 		})
 		  .then(resp => {
 			if (!resp.ok) {

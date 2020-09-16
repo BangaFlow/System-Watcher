@@ -2,11 +2,13 @@ import { Unauthorized } from './../errors'
 import { Router } from 'express'
 import { catchAsync } from '../middleware'
 import { Report } from '../models'
+import { reportSchema, validate } from '../validations'
 
 
 const router = Router()
 
 router.post('/report/add', /* auth, */ catchAsync(async (req, res) => {
+    await validate(reportSchema, req.body)
    
     const { type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user } = req.body
    
