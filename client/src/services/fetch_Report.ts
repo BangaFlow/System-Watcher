@@ -33,3 +33,25 @@ export const addReportFetch = async (type: string, userLocationText: string, age
 		  .catch(error => { reject(error) })
 	  })
 }
+
+export const ReportFetch = async () => {
+
+	return new Promise((resolve, reject) => {
+		fetch('http://localhost:5000/report', {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		  .then(resp => {
+			if (!resp.ok) {
+			  resp.text().then(text => reject(text))
+			}
+			else {
+			  resolve(resp.json());
+			}
+		  })
+		  .catch(error => { reject(error) })
+	  })
+}

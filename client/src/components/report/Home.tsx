@@ -1,27 +1,38 @@
-import React from 'react'
-import { List, Avatar, Space } from 'antd'
-import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons'
+import React, { Suspense, useEffect, useState } from 'react'
+import { List, Avatar, Space, Spin, Badge } from 'antd'
+import { MessageOutlined, LikeOutlined, StarOutlined, MehOutlined } from '@ant-design/icons'
+import { ReportFetch } from '../../services'
+
+type Report = {
+  id: string,
+  type: string,
+  agencyLocationText: string,
+}
 
 function Home() {
 
-  const listData = [];
-  for (let i = 0; i < 23; i++) {
-    listData.push({
-      title: `Anonymous ${i}`,
-      avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-      description:
-        'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-    });
-  }
+  const [listData, setListData] = useState([])
+  // for (let i = 0; i < 5; i++) {
+  //   listData.push({
+  //     title: `Anonymous ${i}`,
+  //     description:
+  //       '.البنك الوطني الفلاحي, الجريصة, تونس',
+  //     content:
+  //       'system is down.',
+  //   })
+  // }
 
   const IconText = ({icon, text}: {icon: any, text: any}) => (
     <Space>
       {React.createElement(icon)}
       {text}
     </Space>
-  );
+  )
+
+  useEffect(() => {
+    ReportFetch()
+    .then((data: any) => setListData(data))
+  }, [])
 
   return (
     <div style={{ padding: '0 24px'}}>
@@ -37,12 +48,15 @@ function Home() {
         dataSource={listData}
         footer={
           <div>
-            <b>ant design</b> footer part
+            <Badge color="#f50" status="processing" text={<b>Live Tracking</b>} /> reports
           </div>
         }
-        renderItem={item => (
+        renderItem={ (item: Report, index) => (
+          <Suspense fallback={<div className="example">
+            <Spin />
+          </div>}>
           <List.Item
-            key={item.title}
+            key={item.id}
             actions={[
               <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
               <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
@@ -57,12 +71,14 @@ function Home() {
             }
           >
             <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={item.title}
-              description={item.description}
+              avatar={<Avatar icon={<MehOutlined />} />}
+              title={`Anonymous ${index}`}
+              description={'.' + item.agencyLocationText}
             />
-            {item.content}
+            {item.type + '.'}
           </List.Item>
+          </Suspense>
+          
         )}
       />
     </div>
