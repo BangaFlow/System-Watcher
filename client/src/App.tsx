@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import {
   Switch,
-  Route
+  Route, NavLink
 } from 'react-router-dom'
 import './App.css'
 import Loader from './helpers/Loader'
@@ -11,6 +11,7 @@ import { useCycle } from 'framer-motion'
 import MobileMenu from './Layout/Landing/MobileMenu'
 import ResetPassword from './pages/ResetPassword'
 import Verify from './components/auth/Verify'
+import { Button, Result } from 'antd'
 
 const Landing = React.lazy(() => 
   import(/* webpackChunkName: "Nav" */ './Layout/Landing/Hero')
@@ -49,8 +50,16 @@ function App() {
             <Route path="/email/:slug">
               <Verify />  
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Landing />
+            </Route>
+            <Route path="*">
+              <Result
+                status="404"
+                title="404"
+                subTitle="Sorry, the page you visited does not exist."
+                extra={<Button type="primary"><NavLink to='/'>Back Home</NavLink></Button>}
+              />
             </Route>
         </Switch>
         <MobileMenu />

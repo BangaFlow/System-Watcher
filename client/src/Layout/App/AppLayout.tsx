@@ -1,6 +1,6 @@
 import React from 'react'
 import './layout.css'
-import { Layout, Menu, Space, Button, Dropdown } from 'antd'
+import { Layout, Menu, Space, Button, Dropdown, Result } from 'antd'
 import { UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined, HistoryOutlined, AlertOutlined, HomeOutlined } from '@ant-design/icons'
 import { Switch, Route, NavLink, RouteComponentProps } from 'react-router-dom'
 import { logOutFetch } from '../../services'
@@ -25,6 +25,15 @@ const routes = [
     sidebar: () => <div style={{ width: '100%'}} >
                     <Map/>
                   </div>,
+  },
+  {
+    path: '*',
+    sidebar: () => <Result
+    status="404"
+    title="404"
+    subTitle="Sorry, the page you visited does not exist."
+    extra={<Button type="primary"><NavLink to='/app'>Back Home</NavLink></Button>}
+  />
   }
 ]
 

@@ -1,13 +1,13 @@
 import { Unauthorized } from './../errors'
 import { Router } from 'express'
-import { catchAsync } from '../middleware'
+import { auth, catchAsync } from '../middleware'
 import { Report } from '../models'
 import { reportIdSchema, reportSchema, validate } from '../validations'
 
 
 const router = Router()
 
-router.get('/report', /*auth, */catchAsync(async (req, res) => {
+router.get('/report', auth, catchAsync(async (req, res) => {
     const reports = await Report.find({}, '-user').exec()
 
     if (reports) {
@@ -17,7 +17,7 @@ router.get('/report', /*auth, */catchAsync(async (req, res) => {
     }
 }))
 
-router.post('/report', /*auth, */catchAsync(async (req, res) => {
+router.post('/report', auth, catchAsync(async (req, res) => {
     await validate(reportIdSchema, req.body)
 
     const { id } = req.body
@@ -31,7 +31,7 @@ router.post('/report', /*auth, */catchAsync(async (req, res) => {
     }
 }))
 
-router.post('/report/add', /* auth, */ catchAsync(async (req, res) => {
+router.post('/report/add', auth, catchAsync(async (req, res) => {
     await validate(reportSchema, req.body)
    
     const { type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user } = req.body
