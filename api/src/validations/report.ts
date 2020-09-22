@@ -22,3 +22,9 @@ export const reportSchema = Joi.object({
   distance,
   user
 })
+
+const id = Joi.objectId().required()
+
+export const reportIdSchema = Joi.object({
+  id
+})

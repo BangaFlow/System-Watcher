@@ -2,10 +2,34 @@ import { Unauthorized } from './../errors'
 import { Router } from 'express'
 import { catchAsync } from '../middleware'
 import { Report } from '../models'
-import { reportSchema, validate } from '../validations'
+import { reportIdSchema, reportSchema, validate } from '../validations'
 
 
 const router = Router()
+
+router.get('/report', /*auth, */catchAsync(async (req, res) => {
+    const reports = await Report.find({}, '-user').exec()
+
+    if (reports) {
+        res.json(reports)
+    } else {
+        res.json({ message: 'No reports were found at the moment.' })
+    }
+}))
+
+router.post('/report', /*auth, */catchAsync(async (req, res) => {
+    await validate(reportIdSchema, req.body)
+
+    const { id } = req.body
+    
+    const report = await Report.findById(id).exec()
+
+    if (report) {
+        res.json(report)
+    } else {
+        res.json({ message: 'No report was found.' })
+    }
+}))
 
 router.post('/report/add', /* auth, */ catchAsync(async (req, res) => {
     await validate(reportSchema, req.body)
