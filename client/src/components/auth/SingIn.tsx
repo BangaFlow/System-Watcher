@@ -57,6 +57,7 @@ function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 		await loginFetch(values.email, values.password)
 		.then(data => {
 			console.log('Success:', data)
+			localStorage.setItem('user', JSON.stringify(data))
 			formLogIn.resetFields()
 			setLoading(false)
 			history.push('/app')

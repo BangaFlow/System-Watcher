@@ -32,7 +32,8 @@ const handleLogout = async () => {
   await logOutFetch()
   .then(data => {
     console.log('Success:', data)
-      window.location.href = '/'
+    localStorage.removeItem('user')
+    window.location.href = '/'
   })
   .catch((error) => {
     console.error('Error:', error)
