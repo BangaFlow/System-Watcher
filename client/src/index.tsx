@@ -18,7 +18,8 @@ ReactDOM.render(
     <Router>
       <Suspense fallback={<Loader />}>
         <Switch>
-          <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} />
+          {/* <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} /> */}
+          <Route path='/app' component={ (props: any) => <AppLayout {...props} />}/>
           <Route path='/'>
             <App />
           </Route>

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './layout.css'
 import { Layout, Menu, Space, Button, Dropdown, Result } from 'antd'
 import { UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined, HistoryOutlined, AlertOutlined, HomeOutlined } from '@ant-design/icons'
 import { Switch, Route, NavLink, RouteComponentProps } from 'react-router-dom'
-import { logOutFetch } from '../../services'
+import { logOutFetch, stayActiveFetch } from '../../services'
+import IdleTimer from 'react-idle-timer'
 import swal from 'sweetalert'
 import History from '../../components/report/History'
 import Map from '../../components/location/Map'
@@ -69,19 +70,53 @@ const menu: JSX.Element = (
   </Menu>
 )
 
+declare type User = {
+ name?: string
+}
+
 function AppLayout(props: RouteComponentProps) {
 
   const { Header, Content, Footer, Sider } = Layout
   const { match } = props
+  const [user, setUser] = useState<User>({})
+
+  const idleTimerRef = useRef(null)
+
+  const onIdle = () => {
+    swal({
+      title: 'Idle TimeOut',
+      text: 'Session will expire soon!',
+      icon: 'warning',
+      buttons: ['Stay', 'Log Out']
+    })
+    .then(async (active) => {
+      if(active) {
+        swal("You will be redirect to home screen now.", {
+          icon: "success",
+        });
+        localStorage.removeItem('user')
+        await handleLogout()
+      } else {
+        await stayActiveFetch()
+        .catch((error) => {
+          console.error('Error:', error)
+          swal("Network Error", JSON.parse(error).message.replace(/"/g, ''), "error")
+        })
+      }
+    })
+    
+  }
+
+  useEffect(() => {
+    // @ts-ignore
+    setUser(JSON.parse(localStorage.getItem('user')))
+  }, [])
   
   return (
     <Layout>
       <Sider
         breakpoint="md"
         collapsedWidth="0"
-        // onBreakpoint={broken => {
-        //   console.log(broken)
-        // }}
         onCollapse={(collapsed, type) => {
           console.log(collapsed, type)
         }}
@@ -102,7 +137,7 @@ function AppLayout(props: RouteComponentProps) {
       <Layout>
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
           <Space style={{ float: 'right', marginRight: '5rem' }}>
-            <span style={{ marginRight: '1.5rem', letterSpacing: '1.5px' }}>Khaled Saidi</span>
+            <span style={{ marginRight: '1.5rem', letterSpacing: '1.5px' }}>{user ? user.name : 'Unknown'}</span>
           <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <Button icon={<UserOutlined />} shape='circle' />
           </Dropdown>
@@ -127,6 +162,12 @@ function AppLayout(props: RouteComponentProps) {
         </Content>
         <Footer style={{ textAlign: 'center' }}>TunisianCloud ©2020 Created by <em>Khaled Saidi</em></Footer>
       </Layout>
+      <IdleTimer
+      ref={idleTimerRef}
+      timeout={25 * 60 * 1000}
+      onIdle={onIdle}
+      >
+      </IdleTimer>
     </Layout>
   )
 }

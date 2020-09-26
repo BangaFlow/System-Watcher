@@ -19,12 +19,17 @@ router.post('/login', guest, catchAsync(async (req, res) => {
     }
 
     logIn(req, user.id)
-
-    res.json({ message: 'OK'})
+    // { message: 'OK'}
+    res.json(user)
 }))
 
 router.post('/logout', auth, catchAsync(async (req, res) => {
     await logOut(req, res)
+
+    res.json({ message: 'ok'})
+}))
+
+router.post('/stayActive', auth, catchAsync(async (req, res) => {
 
     res.json({ message: 'ok'})
 }))

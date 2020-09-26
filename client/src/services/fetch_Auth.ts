@@ -44,6 +44,28 @@ export const logOutFetch = async () => {
 	  })
 }
 
+export const stayActiveFetch = async () => {
+
+	return new Promise((resolve, reject) => {
+		fetch('http://localhost:5000/stayActive', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+		  .then(resp => {
+			if (!resp.ok) {
+			  resp.text().then(text => reject(text))
+			}
+			else {
+			  resolve(resp.json());
+			}
+		  })
+		  .catch(error => { reject(error) })
+	  })
+}
+
 export const forgetFetch = async (email: string) => {
 	const query = `{ "email": "${email}" }`
 
