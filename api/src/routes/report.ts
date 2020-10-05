@@ -8,7 +8,7 @@ import { reportIdSchema, reportSchema, validate } from '../validations'
 const router = Router()
 
 router.get('/report', auth, catchAsync(async (req, res) => {
-    const reports = await Report.find({}, '-user').exec()
+    const reports = await Report.find({}, '-user').sort('-createdAt').exec()
 
     if (reports) {
         res.json(reports)
@@ -35,16 +35,18 @@ router.post('/report/add', auth, catchAsync(async (req, res) => {
     await validate(reportSchema, req.body)
    
     const { type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user } = req.body
-   
-    const report = await Report.findOne().sort({ _id: -1 })
+   // this is in general => per user
+    const report = await Report.findOne({user}).sort({ _id: -1 })
 
-    const now = new Date()
-    //@ts-ignore
-    const delay = now.getTime() - report.createdAt.getTime()
-    const THIRD = 1000 * 60 * 20
-    
-    if (report && delay <= THIRD) {
-        throw new Unauthorized('You can\'t add a new report untill 20 minutes is passed!')
+    if(report) {
+        const now = new Date()
+        //@ts-ignore
+        const delay = now.getTime() - report.createdAt.getTime()
+        const THIRD = 1000 * 60 * 20
+        
+        if (report && delay <= THIRD) {
+            throw new Unauthorized('You can\'t add a new report untill 20 minutes is passed!')
+        }
     }
     
     await Report.create({ type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user})

@@ -12,15 +12,6 @@ type Report = {
 function Home() {
 
   const [listData, setListData] = useState([])
-  // for (let i = 0; i < 5; i++) {
-  //   listData.push({
-  //     title: `Anonymous ${i}`,
-  //     description:
-  //       '.البنك الوطني الفلاحي, الجريصة, تونس',
-  //     content:
-  //       'system is down.',
-  //   })
-  // }
 
   const IconText = ({icon, text}: {icon: any, text: any}) => (
     <Space>
@@ -72,7 +63,7 @@ function Home() {
           >
             <List.Item.Meta
               avatar={<Avatar icon={<MehOutlined />} />}
-              title={`Anonymous ${index}`}
+              title={`Anonymous ${Math.floor(Math.random() * 1000)}`}
               description={'.' + item.agencyLocationText}
             />
             {item.type + '.'}

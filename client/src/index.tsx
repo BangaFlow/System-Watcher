@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import './index.less'
 import Loader from './helpers/Loader'
 import { PrivateRoute } from './helpers/PrivateRoute'
@@ -18,10 +18,17 @@ ReactDOM.render(
     <Router>
       <Suspense fallback={<Loader />}>
         <Switch>
-          {/* <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} /> */}
-          <Route path='/app' component={ (props: any) => <AppLayout {...props} />}/>
+          <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} />
+          {/* <Route path='/app' component={ (props: any) => <AppLayout {...props} />}/> */}
           <Route path='/'>
-            <App />
+            {
+              // @ts-ignore TODO: To be secured with State Context
+            !!JSON.parse(localStorage.getItem('user')) 
+            ? 
+            <Redirect to='/app' />
+            : 
+            <App /> 
+            }
           </Route>
         </Switch>
       </Suspense>

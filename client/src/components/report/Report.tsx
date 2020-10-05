@@ -45,6 +45,9 @@ function Report({userLocation} : {userLocation: location}) {
 	const [alert, setAlert] = useState('')
 	const [loadGeo, setLoadGeo] = useState(false)
 	const [loading, setLoading] = useState(false)
+	// @ts-ignore 
+	// eslint-disable-next-line
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 	const [validateStatus, setValidateStatus] = useState<'warning' | 'error' | 'success' | 'validating' | undefined>('warning')
 	const mapContext = React.useContext(MapContext)
 	const { Option } = Select
@@ -85,7 +88,7 @@ function Report({userLocation} : {userLocation: location}) {
 					if (parseInt(distance) <= 50) {
 						setValidateStatus('success')
 						form.setFieldsValue({distance})
-						addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distance), '5f476fc884ae5c377ca00156')
+						addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distance), user._id)
 						.then(data => {
 							console.log('Success:', data)
 							setLoading(false)
