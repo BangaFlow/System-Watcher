@@ -9,6 +9,7 @@ import swal from 'sweetalert'
 import History from '../../components/report/History'
 import Map from '../../components/location/Map'
 import Home from '../../components/report/Home'
+import UserSettings from '../../pages/UserSettings'
 
 // ? Sidebar Routes
 const routes = [
@@ -26,6 +27,10 @@ const routes = [
     sidebar: () => <div style={{ width: '100%'}} >
                     <Map/>
                   </div>,
+  },
+  {
+    path: '/settings',
+    sidebar: () => <UserSettings />
   },
   {
     path: '*',
@@ -59,9 +64,9 @@ const menu: JSX.Element = (
       </a>
     </Menu.Item>
     <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
+      <NavLink to='/app/settings'>
         <SettingOutlined style={{ marginRight: '1rem'}} /> Settings
-      </a>
+      </NavLink>
     </Menu.Item>
     <Menu.Divider />
     <Menu.Item>
@@ -72,6 +77,7 @@ const menu: JSX.Element = (
 
 declare type User = {
  name?: string
+ _id?: string
 }
 
 function AppLayout(props: RouteComponentProps) {
@@ -113,7 +119,7 @@ function AppLayout(props: RouteComponentProps) {
   }, [])
   
   return (
-    <Layout>
+    <Layout style={{ minHeight: '100vh'}}>
       <Sider
         breakpoint="md"
         collapsedWidth="0"
@@ -145,7 +151,7 @@ function AppLayout(props: RouteComponentProps) {
         </Header>
         <Content style={{ margin: '48px 24px 0' }}>
           {/* 24 */}
-          <div className="site-layout-background" style={{ padding: '24px 0', minHeight: '80.8vh' }}>
+          <div className="site-layout-background" style={{ padding: '24px 0' }}>
           <Switch>
             {routes.map((route, index) => (
               //* Render more <Route>s with the same paths as
