@@ -25,7 +25,7 @@ ReactDOM.render(
             <Route path ='/'>
               <UserContext.Consumer>
                 {
-                  ({user}: any) => Object.entries(user).length !== 0 ? <Redirect to='/app' /> : <App />
+                  ({user}: any) => Object.entries(user).length === 0 ? <App /> : <Redirect to='/app' />
                 }
               </UserContext.Consumer>
             </Route>

@@ -1,48 +1,14 @@
 import React, { useRef } from 'react'
 import './layout.css'
-import { Layout, Menu, Space, Button, Dropdown, Result } from 'antd'
-import { UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined, HistoryOutlined, AlertOutlined, HomeOutlined } from '@ant-design/icons'
+import { Layout, Menu, Space, Button, Dropdown } from 'antd'
+import { UserOutlined, LockOutlined, SettingOutlined } from '@ant-design/icons'
 import { Switch, Route, NavLink, RouteComponentProps } from 'react-router-dom'
 import { logOutFetch, stayActiveFetch } from '../../services'
 import IdleTimer from 'react-idle-timer'
 import swal from 'sweetalert'
-import History from '../../components/report/History'
-import Map from '../../components/location/Map'
-import Home from '../../components/report/Home'
-import UserSettings from '../../pages/UserSettings'
 import { UserContext } from '../../helpers/UserContext'
-
-// ? Sidebar Routes
-const routes = [
-  {
-    path: '/',
-    exact: true,
-    sidebar: () => <Home />
-  },
-  {
-    path: '/history',
-    sidebar: () => <History />,
-  },
-  {
-    path: '/report',
-    sidebar: () => <div style={{ width: '100%'}} >
-                    <Map/>
-                  </div>,
-  },
-  {
-    path: '/settings',
-    sidebar: () => <UserSettings />
-  },
-  {
-    path: '*',
-    sidebar: () => <Result
-    status="404"
-    title="404"
-    subTitle="Sorry, the page you visited does not exist."
-    extra={<Button type="primary"><NavLink to='/app'>Back Home</NavLink></Button>}
-  />
-  }
-]
+import { routes } from './routes/routes'
+import SideBarMenu from './Sidebar/SideBarMenu'
 
 const handleLogout = async () => {
   await logOutFetch()
@@ -56,14 +22,9 @@ const handleLogout = async () => {
     swal("Network Error", JSON.parse(error).message.replace(/"/g, ''), "error")
   })
 }
-
+// ? Top Navbar Menu
 const menu: JSX.Element = (
   <Menu >
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-      <AliwangwangOutlined style={{ marginRight: '1rem'}} /> Profile
-      </a>
-    </Menu.Item>
     <Menu.Item>
       <NavLink to='/app/settings'>
         <SettingOutlined style={{ marginRight: '1rem'}} /> Settings
@@ -107,11 +68,11 @@ function AppLayout(props: RouteComponentProps) {
         })
       }
     })
-    
   }
   
   return (
     <Layout style={{ minHeight: '100vh'}}>
+      {/* // ! Side Bar Menu */}
       <Sider
         breakpoint="md"
         collapsedWidth="0"
@@ -120,19 +81,10 @@ function AppLayout(props: RouteComponentProps) {
         }}
       >
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<HomeOutlined />}>
-            <NavLink to='/app'>Home</NavLink>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<AlertOutlined />}>
-            <NavLink to='/app/report'>Report</NavLink>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<HistoryOutlined />}>
-            <NavLink to='/app/history'>History</NavLink>
-          </Menu.Item>
-        </Menu>
+        <SideBarMenu />
       </Sider>
       <Layout>
+        {/* // ! Top Nav Bar */}
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
           <Space style={{ float: 'right', marginRight: '5rem' }}>
             <span style={{ marginRight: '1.5rem', letterSpacing: '1.5px' }}> { user ? user.name :  'Unknown' }</span>
@@ -141,8 +93,8 @@ function AppLayout(props: RouteComponentProps) {
           </Dropdown>
           </Space>
         </Header>
+        {/* 24 // ! Main Content */}
         <Content style={{ margin: '48px 24px 0' }}>
-          {/* 24 */}
           <div className="site-layout-background" style={{ padding: '24px 0' }}>
           <Switch>
             {routes.map((route, index) => (

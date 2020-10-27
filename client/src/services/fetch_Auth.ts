@@ -114,6 +114,30 @@ export const changeFetch = async (id: string, token: string, password: string, p
 	  })
 }
 
+export const resendFetch = async (email: string) => {
+	const query = `{ "email": "${email}" }`
+
+	return new Promise((resolve, reject) => {
+		fetch('http://localhost:5000/email/resend', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: query
+		})
+		  .then(resp => {
+			if (!resp.ok) {
+			  resp.text().then(text => reject(text))
+			}
+			else {
+			  resolve(resp.json());
+			}
+		  })
+		  .catch(error => { reject(error) })
+	  })
+}
+
 export const verifyFetch = async (id: string, token: string, expires: string, signature: string) => {
 
 	return new Promise((resolve, reject) => {
