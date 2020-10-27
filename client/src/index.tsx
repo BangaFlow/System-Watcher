@@ -1,36 +1,36 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
 import './index.less'
 import Loader from './helpers/Loader'
+import { UserContext, UserProvider } from './helpers/UserContext'
 import { PrivateRoute } from './helpers/PrivateRoute'
-
-const AppLayout = React.lazy(() =>
-  import('./Layout/App/AppLayout')
-)
 
 const App = React.lazy(() =>
   import('./App')
+)
+
+
+const AppLayout = React.lazy(() =>
+  import('./Layout/App/AppLayout')
 )
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Suspense fallback={<Loader />}>
-        <Switch>
-          <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} />
-          {/* <Route path='/app' component={ (props: any) => <AppLayout {...props} />}/> */}
-          <Route path='/'>
-            {
-              // @ts-ignore TODO: To be secured with State Context
-            !!JSON.parse(localStorage.getItem('user')) 
-            ? 
-            <Redirect to='/app' />
-            : 
-            <App /> 
-            }
-          </Route>
-        </Switch>
+        <UserProvider>
+          <Switch>
+            <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} />
+            <Route path ='/'>
+              <UserContext.Consumer>
+                {
+                  ({user}: any) => Object.entries(user).length !== 0 ? <Redirect to='/app' /> : <App />
+                }
+              </UserContext.Consumer>
+            </Route>
+          </Switch>
+        </UserProvider>     
       </Suspense>
     </Router>
   </React.StrictMode>,

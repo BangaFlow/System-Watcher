@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import './layout.css'
 import { Layout, Menu, Space, Button, Dropdown, Result } from 'antd'
 import { UserOutlined, LockOutlined, SettingOutlined, AliwangwangOutlined, HistoryOutlined, AlertOutlined, HomeOutlined } from '@ant-design/icons'
@@ -10,6 +10,7 @@ import History from '../../components/report/History'
 import Map from '../../components/location/Map'
 import Home from '../../components/report/Home'
 import UserSettings from '../../pages/UserSettings'
+import { UserContext } from '../../helpers/UserContext'
 
 // ? Sidebar Routes
 const routes = [
@@ -75,16 +76,12 @@ const menu: JSX.Element = (
   </Menu>
 )
 
-declare type User = {
- name?: string
- _id?: string
-}
-
 function AppLayout(props: RouteComponentProps) {
 
   const { Header, Content, Footer, Sider } = Layout
   const { match } = props
-  const [user, setUser] = useState<User>({})
+  // @ts-ignore
+  const { user } = React.useContext(UserContext)
 
   const idleTimerRef = useRef(null)
 
@@ -112,11 +109,6 @@ function AppLayout(props: RouteComponentProps) {
     })
     
   }
-
-  useEffect(() => {
-    // @ts-ignore
-    setUser(JSON.parse(localStorage.getItem('user')))
-  }, [])
   
   return (
     <Layout style={{ minHeight: '100vh'}}>
@@ -143,7 +135,7 @@ function AppLayout(props: RouteComponentProps) {
       <Layout>
         <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
           <Space style={{ float: 'right', marginRight: '5rem' }}>
-            <span style={{ marginRight: '1.5rem', letterSpacing: '1.5px' }}>{user ? user.name : 'Unknown'}</span>
+            <span style={{ marginRight: '1.5rem', letterSpacing: '1.5px' }}> { user ? user.name :  'Unknown' }</span>
           <Dropdown overlay={menu} placement="bottomLeft" arrow>
             <Button icon={<UserOutlined />} shape='circle' />
           </Dropdown>

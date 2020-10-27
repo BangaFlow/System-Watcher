@@ -4,6 +4,7 @@ import { Store } from 'antd/lib/form/interface'
 import { loginFetch } from '../../services'
 import ForgetPassword from './ForgetPassword'
 import { useHistory } from 'react-router-dom'
+import { UserContext } from '../../helpers/UserContext'
 
 const layout = {
   labelCol: {
@@ -31,9 +32,11 @@ const tailLayout = {
 function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dispatch<React.SetStateAction<boolean>>}) {
 	const [formLogIn] = Form.useForm()
 	const [alert, setAlert] = useState('')
-	const [forget, setForget] =useState(false)
+	const [forget, setForget] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const history = useHistory()
+	const { setUser } = React.useContext(UserContext)
+
 
   const switchPass = () => {
 		setForget(!forget)
@@ -52,12 +55,10 @@ function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 
 	// For the form inside the log in modal
 	const onFinishLog = async (values: Store) => {
-		console.log('These are form values :', values)
 		setLoading(true)
 		await loginFetch(values.email, values.password)
-		.then(data => {
-			console.log('Success:', data)
-			localStorage.setItem('user', JSON.stringify(data))
+		.then( (data: any) => {
+			setUser(data)
 			formLogIn.resetFields()
 			setLoading(false)
 			history.push('/app')
