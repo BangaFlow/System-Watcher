@@ -7,6 +7,7 @@ export interface UserDocument extends Document {
 	email: string
 	name: string
 	password: string
+	role: string
 	verifiedAt: Date
 	matchesPassword: (password: string) => Promise<boolean>
 	verificationUrl: () => string
@@ -21,6 +22,10 @@ const userSchema = new Schema({
 	email: String,
 	name: String,
 	password: String,
+	role: {
+		type: String,
+		default: 'User'
+	},
 	verifiedAt: Date
 }, {
 	timestamps: true

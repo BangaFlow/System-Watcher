@@ -5,22 +5,17 @@ import Home from '../../../components/report/Home'
 import History from '../../../components/report/History'
 import Map from '../../../components/location/Map'
 import UserSettings from '../../../pages/UserSettings'
-//? SideBar Routes For ADMIN
-const adminRoutes = [
-  {
-    path: '/',
-    exact: true,
-    sidebar: () => <h1>ADMIN SETTINGS</h1>
-  }
-]
 
-// ? Sidebar Routes For USER
-
+// ? Sidebar Routes 
 export const routes = [
   {
     path: '/',
     exact: true,
     sidebar: () => <Home />
+  },
+  {
+    path: '/admin',
+    sidebar: () => <h1>ADMIN SETTINGS</h1>
   },
   {
     path: '/history',

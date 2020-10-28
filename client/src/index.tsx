@@ -10,7 +10,6 @@ const App = React.lazy(() =>
   import('./App')
 )
 
-
 const AppLayout = React.lazy(() =>
   import('./Layout/App/AppLayout')
 )
