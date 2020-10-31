@@ -18,7 +18,7 @@ router.post('/login', guest, catchAsync(async (req, res) => {
         throw new Unauthorized('Incorrect email or password')
     }
 
-    logIn(req, user.id)
+    logIn(req, user.id, user.role)
     // { message: 'OK'}
     res.json(user)
 }))

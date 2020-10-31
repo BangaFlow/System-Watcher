@@ -24,7 +24,7 @@ router.post('/register', guest, catchAsync(async (req, res) => {
 
 	const user = await User.create({ name, email, password })
 
-	logIn(req, user.id)
+	logIn(req, user.id, user.role)
 
 	const link = user.verificationUrl()
 

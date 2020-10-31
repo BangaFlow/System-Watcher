@@ -20,6 +20,14 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     next()
 }
 
+export const admin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.session!.role !== 'Admin') {
+      return next(new Unauthorized('You don\'t have enough permissions'))
+  }
+
+  next()
+}
+
 export const active  = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       if (isLoggedIn(req)) {
