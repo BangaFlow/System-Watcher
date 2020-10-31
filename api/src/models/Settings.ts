@@ -2,14 +2,16 @@ import{ Schema, model, Document } from 'mongoose'
 
 export interface SettingsDocument extends Document {
 	apiKey: string
-	distance: string
-  radius: number
+	distance: number
+	radius: number
+	holdTime: number
 }
 
 const settingsSchema = new Schema({
 	apiKey: String,
-	distance: String,
-  radius: String,
+	distance: Number,
+	radius: Number,
+	holdTime: Number
 }, {
 	timestamps: true
 })

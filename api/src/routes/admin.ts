@@ -9,7 +9,7 @@ const router = Router()
 const warn = red
 
 router.get('/settings', auth, admin, catchAsync(async (req, res) => {
-    const settings = await Settings.find({}).exec()
+    const settings = await Settings.findOne().exec()
 
     if (settings) {
         res.json(settings)

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Alert, Tooltip, Input, Button, Select } from 'antd'
 import { Store } from 'antd/lib/form/interface'
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import MapContext from '../../helpers/MapContext'
-import { addReportFetch } from '../../services'
+import { addReportFetch, SettingsFetch } from '../../services'
 
 const layout = {
   labelCol: {
@@ -45,12 +45,15 @@ function Report({userLocation} : {userLocation: location}) {
 	const [alert, setAlert] = useState('')
 	const [loadGeo, setLoadGeo] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [settings, setSettings] = useState([])
 	// @ts-ignore 
 	// eslint-disable-next-line
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 	const [validateStatus, setValidateStatus] = useState<'warning' | 'error' | 'success' | 'validating' | undefined>('warning')
 	const mapContext = React.useContext(MapContext)
 	const { Option } = Select
+	//@ts-ignore
+	const { radius, distance } = settings
 
 	const onFinish = async (values: Store) => {
 		// const address = values.state.replace(/\//g, ',')
@@ -66,7 +69,7 @@ function Report({userLocation} : {userLocation: location}) {
 			service.browse({
 				at: `${userLocation.lat},${userLocation.lng}`,
 				name: values.agencyName,
-				in: `circle:${userLocation.lat},${userLocation.lng};r=2000`,
+				in: `circle:${userLocation.lat},${userLocation.lng};r=${radius}`,
 				categories: values.agency,
 				limit: '1'
 			}, (result: any) => {
@@ -84,11 +87,11 @@ function Report({userLocation} : {userLocation: location}) {
 					))
 					const point1 = lineString.extractPoint(0)
 					const point2 = lineString.extractPoint(1)
-					const distance = point1.distance(point2).toFixed(2)
-					if (parseInt(distance) <= 50) {
+					const distanceBetweenUandA = point1.distance(point2).toFixed(2)
+					if (parseInt(distanceBetweenUandA) <= distance) {
 						setValidateStatus('success')
-						form.setFieldsValue({distance})
-						addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distance), user._id)
+						form.setFieldsValue({distance: distanceBetweenUandA})
+						addReportFetch(values.problem, values.state, item.address.label, userLocation, { lat: item.access[0].lat, lng: item.access[0].lng }, parseInt(distanceBetweenUandA), user._id)
 						.then(data => {
 							console.log('Success:', data)
 							setLoading(false)
@@ -103,7 +106,7 @@ function Report({userLocation} : {userLocation: location}) {
 					} else {
 						setLoading(false)
 						setValidateStatus('error')
-						form.setFieldsValue({distance: distance + ' is greater than 50.00 meters!'})
+						form.setFieldsValue({distance: distanceBetweenUandA + ` is greater than ${distance} meters!`})
 					} 
 				} else {
 					form.setFieldsValue({distance: 'There\'s no such agency at a radius of 2km'})
@@ -131,7 +134,19 @@ function Report({userLocation} : {userLocation: location}) {
 			setLoadGeo(false)
 		}, (err: any) => console.log(err))
 		}
-	}	
+	}
+
+	const loadData = async () => {
+    SettingsFetch().then((data: any) => setSettings(data))
+  }
+
+  useEffect(() => {
+    loadData()
+	}, [])
+	
+	if (Object.entries(settings).length === 0) {
+		return null
+	}
 
   return (
 		<div style={{ padding: '16px 16px 0', textAlign: 'left'}}>
@@ -214,7 +229,7 @@ function Report({userLocation} : {userLocation: location}) {
 					hasFeedback
 					validateStatus={validateStatus}
 				>
-					<Input placeholder='You must be at distance <= 50.00 meters' suffix='Meters' disabled />
+					<Input placeholder={`You must be at distance <= ${distance} meters`} suffix='Meters' disabled />
 				</Form.Item>
 				<Form.Item
 				{...tailLayout}

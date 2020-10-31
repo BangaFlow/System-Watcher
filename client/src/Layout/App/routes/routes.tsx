@@ -5,6 +5,7 @@ import Home from '../../../components/report/Home'
 import History from '../../../components/report/History'
 import Map from '../../../components/location/Map'
 import UserSettings from '../../../pages/UserSettings'
+import AdminSettings from '../../../pages/AdminSettings'
 
 // ? Sidebar Routes 
 export const routes = [
@@ -15,7 +16,7 @@ export const routes = [
   },
   {
     path: '/admin',
-    sidebar: () => <h1>ADMIN SETTINGS</h1>
+    sidebar: () => <AdminSettings />
   },
   {
     path: '/history',
