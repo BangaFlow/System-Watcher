@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import MapContext from '../../helpers/MapContext'
+import { SettingsFetch } from '../../services'
 import Report from '../report/Report'
 import image from './iconfinder_location_1814106.png'
 
@@ -10,6 +11,7 @@ declare global {
 function Map() {
 
   // Create a reference to the HTML element we want to put the map on
+  const [settings, setSettings] = useState({})
   const mapRef = React.useRef(null)
   const [map, setMap] = useState()
   const [behavior, setBehave] = useState()
@@ -17,12 +19,17 @@ function Map() {
   const [platform, setPlatform] = useState()
   const [location, setLocation] = useState({lat: 0, lng: 0})
 
+  const loadData = async () => {
+    SettingsFetch().then((data: any) => setSettings(data))
+  }
+
   /**
    * Create the map instance
    * While `useEffect` could also be used here, `useLayoutEffect` will render
    * the map sooner
    */
-  React.useLayoutEffect(() => {
+  React.useLayoutEffect(()  => {
+    loadData()
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition( 
         (position) => {
@@ -31,7 +38,8 @@ function Map() {
         if (!mapRef.current) return
         const H = window.H
         const platform = new H.service.Platform({
-            apikey: "zuNIZIIrPpMAjDLz8tlwWIWcKt_EMUuu7yeQQaj_7fM"
+          //@ts-ignore
+            apikey: settings.apiKey
         }) 
         const defaultLayers = platform.createDefaultLayers()
         const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
@@ -62,8 +70,8 @@ function Map() {
       },
       (error) => { window.alert('error') }
     )}
-    
-  }, [mapRef]) // This will run this hook every time this ref is updated
+    //@ts-ignore
+  }, [mapRef, settings.apiKey]) // This will run this hook every time this ref is updated
 
   return (
     <MapContext.Provider value={{map, behavior, ui, platform }}>

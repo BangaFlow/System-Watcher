@@ -1,3 +1,4 @@
+import { Settings } from './../models/Settings';
 import { Unauthorized } from './../errors'
 import { Router } from 'express'
 import { auth, catchAsync } from '../middleware'
@@ -37,12 +38,13 @@ router.post('/report/add', auth, catchAsync(async (req, res) => {
     const { type, userLocationText, agencyLocationText, userCoord, agencyCoord, distance, user } = req.body
    // this is in general => per user
     const report = await Report.findOne({user}).sort({ _id: -1 })
+    const settings = await Settings.findOne().exec()
 
-    if(report) {
+    if(report && settings) {
         const now = new Date()
         //@ts-ignore
         const delay = now.getTime() - report.createdAt.getTime()
-        const THIRD = 1000 * 60 * 20
+        const THIRD = 1000 * 60 * settings.holdTime
         
         if (report && delay <= THIRD) {
             throw new Unauthorized('You can\'t add a new report untill 20 minutes is passed!')

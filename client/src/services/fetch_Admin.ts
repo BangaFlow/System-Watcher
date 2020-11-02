@@ -1,5 +1,6 @@
-export const updateSettingsFetch = async (apiKey: string, distance: number, radius: number, holdTime: number) => {
+export const updateSettingsFetch = async (id: string, apiKey: string, distance: number, radius: number, holdTime: number) => {
 	const query = { 
+		id,
     apiKey,
 		distance,
     radius,
@@ -8,7 +9,7 @@ export const updateSettingsFetch = async (apiKey: string, distance: number, radi
 
 	return new Promise((resolve, reject) => {
 		fetch('http://localhost:5000/settings', {
-			method: 'POST',
+			method: 'PUT',
 			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',

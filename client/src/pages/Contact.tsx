@@ -25,7 +25,7 @@ function useWindowSize() {
 
 function Contact() {
 
-	const [width, height] = useWindowSize()
+	const [width] = useWindowSize()
 
 	const { Content } = Layout
 	
@@ -47,7 +47,6 @@ function Contact() {
 			<Form {...layout} name='nest-messages' onFinish={onFinish} size='large' layout='vertical'>
 				<Form.Item>
 					<h1>Contact Us</h1>
-					<span>Window size: {width} x {height}</span>
 				</Form.Item>
 				<Form.Item name='name' label={<strong className='contact--text'>Name</strong>} rules={[{ required: true }]}>
 					<Input />

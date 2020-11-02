@@ -27,7 +27,7 @@ router.put('/settings', auth, admin, catchAsync(async (req, res) => {
         req.body,
         { useFindAndModify: false })
         .then( (doc) => {
-          res.status(202).json(doc)
+            res.json({ message: 'OK'})
         })
         .catch((err) => {
      // Mongoose Validation Error/s
@@ -38,8 +38,6 @@ router.put('/settings', auth, admin, catchAsync(async (req, res) => {
              res.status(422).json(err)
             }
         )
-    
-    res.json({ message: 'OK'})
 }))
 
 export default router

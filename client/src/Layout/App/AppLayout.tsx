@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import './layout.css'
 import { Layout, Menu, Space, Button, Dropdown } from 'antd'
 import { UserOutlined, LockOutlined, SettingOutlined } from '@ant-design/icons'
@@ -42,7 +42,7 @@ function AppLayout(props: RouteComponentProps) {
   const { Header, Content, Footer, Sider } = Layout
   const { match } = props
   // @ts-ignore
-  const { user } = React.useContext(UserContext)
+  const { user, setUser } = React.useContext(UserContext)
 
   const idleTimerRef = useRef(null)
 
@@ -69,6 +69,21 @@ function AppLayout(props: RouteComponentProps) {
       }
     })
   }
+
+  const isActive = async () => {
+    await stayActiveFetch()
+        .catch((error) => {
+          swal("Network Error", JSON.parse(error).message.replace(/"/g, ''), "error")
+          .then( () => {
+            setUser(null)
+          })
+        })
+  }
+
+useEffect(() => {
+  isActive()
+  // eslint-disable-next-line
+}, [])
   
   return (
     <Layout style={{ minHeight: '100vh'}}>

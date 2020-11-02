@@ -58,9 +58,9 @@ function SingIn({visible, setVisible}: { visible: boolean, setVisible: React.Dis
 		setLoading(true)
 		await loginFetch(values.email, values.password)
 		.then( (data: any) => {
+			setLoading(false)
 			setUser(data)
 			formLogIn.resetFields()
-			setLoading(false)
 			history.push('/app')
 		})
 		.catch((error) => {
