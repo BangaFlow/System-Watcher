@@ -8,7 +8,7 @@ import { reportIdSchema, reportSchema, validate } from '../validations'
 
 const router = Router()
 
-router.get('/report', auth, catchAsync(async (req, res) => {
+router.get('/report', catchAsync(async (req, res) => {
     const reports = await Report.find({}, '-user').sort('-createdAt').exec()
 
     if (reports) {
@@ -47,7 +47,7 @@ router.post('/report/add', auth, catchAsync(async (req, res) => {
         const THIRD = 1000 * 60 * settings.holdTime
         
         if (report && delay <= THIRD) {
-            throw new Unauthorized('You can\'t add a new report untill 20 minutes is passed!')
+            throw new Unauthorized(`You can\'t add a new report untill ${settings.holdTime} minutes is passed!`)
         }
     }
     

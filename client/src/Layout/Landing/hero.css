@@ -11,61 +11,18 @@
     padding: 1rem;
 }
 
-.child--1 {
-    flex-basis: 35%;
+.child {
+    flex-basis: 90%;
 }
 
-.child--2 {
-    flex-basis: 45%;
-}
-
-.hero--text {
-    text-align: left;
-    color: #4A4A4A;
-}
-
-.hero__title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 3rem;
-    padding-top: 7rem;
-}
-
-.hero__paragraph {
-    font-family: Pridi;
-    font-weight: normal;
-    font-size: 1.5rem;
-}
-
-.hero__image {
-    max-width: 100%;
-    height: auto;
-    padding-top: 2em;
-}
 
 @media screen and (max-width: 700px) {
 
     .hero__container {
         flex-basis: 100%;
     }
-
-    .child--1 {
-        order: 2;
-    }
     
     .child--2 {
         order: 1;
-    }
-
-    .hero__image {
-        padding-top: 2em;
-    }
-
-    .hero--text {
-        line-height: normal;
-    }
-
-    .hero__title {
-        font-size: 2.5rem;
-        padding-top: 2rem;
     }
   }

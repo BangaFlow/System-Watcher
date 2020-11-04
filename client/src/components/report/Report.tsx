@@ -144,9 +144,6 @@ function Report({userLocation} : {userLocation: location}) {
     loadData()
 	}, [])
 	
-	if (Object.entries(settings).length === 0) {
-		return null
-	}
 
   return (
 		<div style={{ padding: '16px 16px 0', textAlign: 'left'}}>

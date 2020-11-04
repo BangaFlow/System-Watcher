@@ -68,7 +68,7 @@ function Map() {
           hMap.dispose();
         }
       },
-      (error) => { window.alert('error') }
+      (error) => { window.alert(error) }
     )}
     //@ts-ignore
   }, [mapRef, settings.apiKey]) // This will run this hook every time this ref is updated

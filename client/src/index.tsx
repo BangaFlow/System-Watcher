@@ -5,6 +5,7 @@ import './index.less'
 import Loader from './helpers/Loader'
 import { UserContext, UserProvider } from './helpers/UserContext'
 import { PrivateRoute } from './helpers/PrivateRoute'
+import { HereMapProvider } from './helpers/LocationMapContext'
 
 const App = React.lazy(() =>
   import('./App')
@@ -18,6 +19,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Suspense fallback={<Loader />}>
+        <HereMapProvider>
         <UserProvider>
           <Switch>
             <PrivateRoute path='/app' component={ (props: any) => <AppLayout {...props} />} />
@@ -29,7 +31,8 @@ ReactDOM.render(
               </UserContext.Consumer>
             </Route>
           </Switch>
-        </UserProvider>     
+        </UserProvider>
+        </HereMapProvider>   
       </Suspense>
     </Router>
   </React.StrictMode>,

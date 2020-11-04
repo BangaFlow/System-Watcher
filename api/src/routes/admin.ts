@@ -8,7 +8,7 @@ import { red } from 'chalk';
 const router = Router()
 const warn = red
 
-router.get('/settings', auth, admin, catchAsync(async (req, res) => {
+router.get('/settings', catchAsync(async (req, res) => {
     const settings = await Settings.findOne().exec()
 
     if (settings) {

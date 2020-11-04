@@ -1,36 +1,41 @@
-import React from 'react'
-import ReactLogo from '../../assets/images/undraw_Surveillance.svg'
+import React, { useEffect, useState } from 'react'
 import './hero.css'
 import { motion } from 'framer-motion'
+import { ReportFetch, SettingsFetch } from '../../services'
+import LocationMap from '../../components/location/LocationMap'
 
 function Landing() {
 
+  const [settigns, setSettings] = useState({})
+  const [reports, setReports] = useState([])
+  
+  const loadSettings = async () => {
+    await SettingsFetch().then((data: any) => setSettings(data))
+  }
+
+  const loadReports = async () => {
+    await ReportFetch().then((data: any) => setReports(data))
+  }
+
+
+  useEffect(() => {
+    loadSettings()
+    loadReports()
+  }, [])
+
   return (
     <div className='hero__wrapper' >
-      <div className='hero__container child--1'>
-        <motion.h1 
-          className="hero--text hero__title"
-          animate={{ y: ['90px', '0px'], opacity: [0, 1], transition: { delay: .5, ease: "easeInOut", duration: 2}}}
-        >
-          The system down tracking <br/> tool you'll enjoy using
-        </motion.h1>
-        <motion.p 
-          className="hero--text hero__paragraph"
-          animate={{ y: ['90px', '0px'], opacity: [0, 1], transition: { delay: .5, ease: "easeInOut", duration: 2}}}
-        >
-          Linear helps streamline software projects, sprints, tasks, and bug
-          tracking. It's built for high-performance teams.
-        </motion.p>
-      </div>
       <motion.div
-       className='hero__container child--2'
+       className='hero__container child'
        animate={{ opacity: [0, 1], transition: { delay: .2, duration: 2, ease: [.6, .01, -0.05, .9]}}}
       >
-        <img
-          className="hero__image"
-          src={ReactLogo}
-          alt='Eye & a human'
-        />
+        {
+          Object.entries(settigns).length !== 0 && reports.length !== 0
+          ?
+          <LocationMap settings={settigns} reports={reports} />
+          :
+          null
+        }
       </motion.div>
     </div>
   )
