@@ -7,7 +7,7 @@ export const registerFetch = async (name: string, email: string, password: strin
      }`
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/register', {
+		fetch('/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

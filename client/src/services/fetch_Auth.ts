@@ -2,7 +2,7 @@ export const loginFetch = async (email: string, password: string) => {
 	const query = `{ "email": "${email}", "password": "${password}" }`
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/login', {
+		fetch('/login', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -25,7 +25,7 @@ export const loginFetch = async (email: string, password: string) => {
 export const logOutFetch = async () => {
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/logout', {
+		fetch('/logout', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -47,7 +47,7 @@ export const logOutFetch = async () => {
 export const stayActiveFetch = async () => {
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/stayActive', {
+		fetch('/stayActive', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -70,7 +70,7 @@ export const forgetFetch = async (email: string) => {
 	const query = `{ "email": "${email}" }`
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/password/email', {
+		fetch('/password/email', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -94,7 +94,7 @@ export const changeFetch = async (id: string, token: string, password: string, p
 	const query = `{ "password": "${password}", "passwordConfirmation": "${passwordConfirmation}" }`
 
 	return new Promise((resolve, reject) => {
-		fetch(`http://localhost:5000/password/reset?id=${id}&token=${token}`, {
+		fetch(`/password/reset?id=${id}&token=${token}`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -118,7 +118,7 @@ export const resendFetch = async (email: string) => {
 	const query = `{ "email": "${email}" }`
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/email/resend', {
+		fetch('/email/resend', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -141,7 +141,7 @@ export const resendFetch = async (email: string) => {
 export const verifyFetch = async (id: string, token: string, expires: string, signature: string) => {
 
 	return new Promise((resolve, reject) => {
-		fetch(`http://localhost:5000/email/verify?id=${id}&token=${token}&expires=${expires}&signature=${signature}`, {
+		fetch(`/email/verify?id=${id}&token=${token}&expires=${expires}&signature=${signature}`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {

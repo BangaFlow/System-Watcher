@@ -14,7 +14,7 @@ export const addReportFetch = async (type: string, userLocationText: string, age
    }
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/report/add', {
+		fetch('/report/add', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -37,7 +37,7 @@ export const addReportFetch = async (type: string, userLocationText: string, age
 export const ReportFetch = async () => {
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/report', {
+		fetch('/report', {
 			method: 'GET',
 			credentials: 'include',
 			headers: {

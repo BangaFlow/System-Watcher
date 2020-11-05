@@ -8,7 +8,7 @@ export const updateSettingsFetch = async (id: string, apiKey: string, distance: 
    }
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/settings', {
+		fetch('/settings', {
 			method: 'PUT',
 			credentials: 'include',
 			headers: {
@@ -31,7 +31,7 @@ export const updateSettingsFetch = async (id: string, apiKey: string, distance: 
 export const SettingsFetch = async () => {
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:5000/settings', {
+		fetch('/settings', {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
